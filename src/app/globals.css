@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+/* Design tokens — modo claro y oscuro. Estética premium (Linear/Stripe-like). */
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --color-brand-50:  #fef2f2;
+  --color-brand-500: #ef4444;   /* rojo combate */
+  --color-brand-600: #dc2626;
+  --color-brand-700: #b91c1c;
+}
+
+:root {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --text: #0a0a0a;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --radius: 0.875rem;
+}
+
+.dark {
+  --bg: #0a0a0b;
+  --surface: #141416;
+  --text: #fafafa;
+  --muted: #9ca3af;
+  --border: #26262b;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up { animation: fade-up 0.4s ease-out both; }
