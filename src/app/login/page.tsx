@@ -43,7 +43,8 @@ export default function LoginPage() {
           <p className="text-xs text-center text-[var(--muted)] mt-4">
             El acceso es solo con tu cuenta de Google.
           </p>
-          {process.env.NODE_ENV !== "production" && <DevLogin />}
+          {(process.env.NODE_ENV !== "production" ||
+            process.env.NEXT_PUBLIC_ENABLE_DEV_LOGIN === "true") && <DevLogin />}
         </div>
       </div>
     </main>
