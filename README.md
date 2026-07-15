@@ -4,6 +4,7 @@ Web app de reservas para gimnasio de artes marciales (Muay Thai · MMA · Boxeo)
 Next.js 15 + Supabase (PostgreSQL) + Tailwind. Mobile-first, PWA, tiempo real.
 
 Ver arquitectura completa en [`docs/ARQUITECTURA.md`](docs/ARQUITECTURA.md).
+Para cambiar colores, textos, tipografía o logo: [`PERSONALIZACION.md`](PERSONALIZACION.md).
 
 ## Puesta en marcha
 
