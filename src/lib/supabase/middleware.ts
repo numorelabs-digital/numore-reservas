@@ -50,16 +50,8 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Guarda de rol admin
-  if (user && path.startsWith("/admin")) {
-    const { data: profile } = await supabase
-      .from("profiles").select("role").eq("id", user.id).single();
-    if (profile?.role !== "admin") {
-      const url = request.nextUrl.clone();
-      url.pathname = "/dashboard";
-      return NextResponse.redirect(url);
-    }
-  }
+  // El rol admin lo valida el layout de /admin (requireAdmin), evitando
+  // una consulta extra en cada navegación aquí.
 
   return response;
 }
