@@ -5,7 +5,7 @@ import { site } from "@/config/site";
 // Se sirve en /manifest.webmanifest
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: `${site.name} · Clases y Reservas`,
+    name: `${site.name} · Agende seu horário`,
     short_name: site.shortName,
     description: site.tagline,
     start_url: "/dashboard",

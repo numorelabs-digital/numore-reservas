@@ -12,7 +12,7 @@ import { SwrProvider } from "@/components/swr-provider";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: `${site.name} · Clases y Reservas`,
+  title: `${site.name} · Agende seu horário`,
   description: site.tagline,
   manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: site.shortName },
