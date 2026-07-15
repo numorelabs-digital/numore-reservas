@@ -7,7 +7,7 @@ import { z } from "zod";
 const schema = z.object({
   name: z.string().min(1, "El nombre es obligatorio."),
   description: z.string().optional(),
-  points_cost: z.coerce.number().int().positive("Los puntos deben ser mayores a 0."),
+  points_cost: z.coerce.number().int().positive("Los pontos deben ser mayores a 0."),
   stock: z.coerce.number().int().min(0).optional(),
 });
 

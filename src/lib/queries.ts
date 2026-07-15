@@ -1,23 +1,23 @@
 import { createClient } from "@/lib/supabase/server";
 
-// Datos agregados para el dashboard del alumno.
+// Datos agregados para el dashboard del aluno.
 export async function getStudentOverview(profileId: string) {
   const supabase = await createClient();
   const today = new Date().toISOString().slice(0, 10);
 
   const [purchases, points, nextBooking, recentBookings] = await Promise.all([
-    // Compras activas + clases restantes
+    // Compras activas + aulas restantes
     supabase
       .from("purchase_remaining")
       .select("*")
       .eq("profile_id", profileId),
-    // Balance de puntos
+    // Balance de pontos
     supabase
       .from("points_balance")
       .select("balance")
       .eq("profile_id", profileId)
       .maybeSingle(),
-    // Próxima clase reservada
+    // Próxima aula reservada
     supabase
       .from("bookings")
       .select("id, status, class_sessions!inner(session_date, start_time, end_time, class_types(name, color))")
@@ -27,7 +27,7 @@ export async function getStudentOverview(profileId: string) {
       .order("session_date", { referencedTable: "class_sessions", ascending: true })
       .limit(1)
       .maybeSingle(),
-    // Historial reciente
+    // Histórico recente
     supabase
       .from("bookings")
       .select("id, status, created_at, class_sessions(session_date, start_time, class_types(name))")

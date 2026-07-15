@@ -27,7 +27,7 @@ export function ScannerClient() {
       );
       setScanning(true);
     } catch {
-      setFeedback({ type: "err", msg: "No se pudo acceder a la cámara." });
+      setFeedback({ type: "err", msg: "Não foi possível acessar a câmera." });
     }
   }
 
@@ -64,7 +64,7 @@ export function ScannerClient() {
           <button onClick={start}
             className="absolute inset-0 grid place-items-center bg-black/60 text-white">
             <span className="flex flex-col items-center gap-2">
-              <Camera size={32} /> Iniciar cámara
+              <Camera size={32} /> Iniciar câmera
             </span>
           </button>
         )}
@@ -88,7 +88,7 @@ export function ScannerClient() {
       {scanning && (
         <button onClick={stop}
           className="w-full card p-3 text-sm font-medium text-[var(--muted)] hover:bg-[var(--bg)]">
-          Detener cámara
+          Parar câmera
         </button>
       )}
     </div>

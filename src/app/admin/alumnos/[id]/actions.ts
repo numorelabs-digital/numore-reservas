@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { addDays } from "date-fns";
 
-// Asigna manualmente un paquete a un alumno (pago fuera de la app).
+// Asigna manualmente un pacote a un aluno (pago fuera de la app).
 export async function assignPackage(input: {
   profileId: string;
   packageId: string;
@@ -13,10 +13,10 @@ export async function assignPackage(input: {
 
   const { data: pkg, error: pErr } = await supabase
     .from("packages").select("*").eq("id", input.packageId).single();
-  if (pErr || !pkg) return { ok: false as const, error: "Paquete no encontrado." };
+  if (pErr || !pkg) return { ok: false as const, error: "Pacote no encontrado." };
 
   if (pkg.modality === "fixed_days" && (!input.allowedWeekdays || input.allowedWeekdays.length === 0)) {
-    return { ok: false as const, error: "Elegí los días para el paquete de días fijos." };
+    return { ok: false as const, error: "Escolha os dias para o pacote de dias fixos." };
   }
 
   const expires = addDays(new Date(), pkg.validity_days ?? 30).toISOString();

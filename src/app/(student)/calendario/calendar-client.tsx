@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useMe, useCalendar } from "@/lib/hooks";
 import { bookSession, cancelBooking, rescheduleBooking } from "./actions";
 import { addDays, format, parseISO, isSameDay } from "date-fns";
-import { es } from "date-fns/locale";
+import { ptBR } from "date-fns/locale";
 import { Users, Check, Loader2, Repeat, X } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -29,7 +29,7 @@ export function CalendarClient() {
   const purchaseId = data?.purchaseId ?? null;
   const totalRemaining = data?.totalRemaining ?? 0;
 
-  // Realtime: al cambiar cualquier reserva, revalida los cupos.
+  // Realtime: al cambiar cualquier reserva, revalida los vagas.
   useEffect(() => {
     const supabase = createClient();
     const channel = supabase
@@ -55,17 +55,17 @@ export function CalendarClient() {
       startTransition(async () => {
         const res = await rescheduleBooking(rescheduling.bookingId, s.id);
         setBusyId(null); setRescheduling(null);
-        if (res.ok) { toast.success("¡Horario cambiado!"); mutate(); }
+        if (res.ok) { toast.success("Horário alterado!"); mutate(); }
         else toast.error(res.error);
       });
       return;
     }
-    if (!purchaseId) { toast.error("No tenés clases. Comprá en la Tienda para reservar."); return; }
+    if (!purchaseId) { toast.error("Você não tem aulas. Compre na Loja para reservar."); return; }
     setBusyId(s.id);
     startTransition(async () => {
       const res = await bookSession(s.id, purchaseId);
       setBusyId(null);
-      if (res.ok) { toast.success("¡Reserva confirmada!"); mutate(); }
+      if (res.ok) { toast.success("Reserva confirmada!"); mutate(); }
       else toast.error(res.error);
     });
   }
@@ -87,9 +87,9 @@ export function CalendarClient() {
     startTransition(async () => {
       const id = await resolveBookingId(s.id);
       setBusyId(null);
-      if (!id) { toast.error("No se encontró la reserva."); return; }
+      if (!id) { toast.error("Reserva não encontrada."); return; }
       setRescheduling({ bookingId: id, sessionId: s.id });
-      toast.info("Elegí el nuevo horario disponible");
+      toast.info("Escolha o novo horário disponível");
     });
   }
 
@@ -98,16 +98,16 @@ export function CalendarClient() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold">Reservar clase</h1>
+        <h1 className="text-lg font-semibold">Reservar aula</h1>
         <span className="text-xs rounded-full bg-brand-50 text-brand-600 px-2.5 py-1 font-medium dark:bg-brand-500/10">
-          {totalRemaining} clases restantes
+          {totalRemaining} aulas restantes
         </span>
       </div>
 
       {rescheduling && (
         <div className="card p-3 flex items-center justify-between bg-brand-50 border-brand-500/30 dark:bg-brand-500/10 animate-fade-up">
           <p className="text-sm text-brand-600 font-medium flex items-center gap-1.5">
-            <Repeat size={15} /> Elegí el nuevo horario
+            <Repeat size={15} /> Escolha o novo horário
           </p>
           <button onClick={() => setRescheduling(null)}
             className="text-xs text-[var(--muted)] flex items-center gap-1 hover:text-[var(--text)]">
@@ -125,20 +125,20 @@ export function CalendarClient() {
             <button key={d.toISOString()} onClick={() => setSelected(d)}
               className={cn("shrink-0 w-14 rounded-xl border py-2 text-center transition",
                 active ? "bg-brand-500 text-white border-transparent" : "border-[var(--border)] hover:bg-[var(--bg)]")}>
-              <div className="text-[10px] uppercase opacity-70">{format(d, "EEE", { locale: es })}</div>
+              <div className="text-[10px] uppercase opacity-70">{format(d, "EEE", { locale: ptBR })}</div>
               <div className="text-lg font-semibold leading-none mt-0.5">{format(d, "d")}</div>
               <div className={cn("text-[10px] mt-1", active ? "text-white/70" : "text-[var(--muted)]")}>
-                {count > 0 ? `${count} clases` : "—"}
+                {count > 0 ? `${count} aulas` : "—"}
               </div>
             </button>
           );
         })}
       </div>
 
-      {/* Sesiones del día */}
+      {/* Sessões del día */}
       <div className="space-y-3">
         {daySessions.length === 0 && (
-          <div className="card p-6 text-center text-sm text-[var(--muted)]">No hay clases este día.</div>
+          <div className="card p-6 text-center text-sm text-[var(--muted)]">Sem aulas neste dia.</div>
         )}
         {daySessions.map((s) => (
           <SessionRow key={s.id} s={s} busy={pending && busyId === s.id}
@@ -165,27 +165,27 @@ function SessionRow({
           <p className="text-sm text-[var(--muted)]">{s.start_time.slice(0, 5)}–{s.end_time.slice(0, 5)} hs</p>
           <p className={cn("text-xs mt-0.5 flex items-center gap-1", s.is_full ? "text-red-500" : "text-[var(--muted)]")}>
             <Users size={12} />
-            {s.is_full ? "Completo" : `${s.available} de ${s.capacity} cupos`}
+            {s.is_full ? "Lotado" : `${s.available} de ${s.capacity} vagas`}
           </p>
         </div>
       </div>
 
       {rescheduleMode ? (
         isBeingMoved ? (
-          <span className="text-xs font-medium text-[var(--muted)] px-3 py-2">Actual</span>
+          <span className="text-xs font-medium text-[var(--muted)] px-3 py-2">Atual</span>
         ) : s.is_full || s.booked ? (
-          <span className="text-xs font-medium text-[var(--muted)] px-3 py-2">{s.booked ? "Reservada" : "Completo"}</span>
+          <span className="text-xs font-medium text-[var(--muted)] px-3 py-2">{s.booked ? "Reservada" : "Lotado"}</span>
         ) : (
           <button onClick={onBook} disabled={busy}
             className="text-sm font-medium rounded-lg bg-brand-500 text-white px-4 py-2 hover:bg-brand-600 disabled:opacity-50 flex items-center gap-1.5">
-            {busy && <Loader2 size={14} className="animate-spin" />} Mover acá
+            {busy && <Loader2 size={14} className="animate-spin" />} Mover para cá
           </button>
         )
       ) : s.booked ? (
         <div className="flex items-center gap-2">
           <button onClick={onReschedule} disabled={busy}
             className="text-xs font-medium rounded-lg border border-[var(--border)] px-2.5 py-2 hover:bg-[var(--bg)] disabled:opacity-50 flex items-center gap-1">
-            <Repeat size={13} /> Cambiar
+            <Repeat size={13} /> Alterar
           </button>
           <button onClick={onCancel} disabled={busy}
             className="text-xs font-medium rounded-lg border border-[var(--border)] px-2.5 py-2 hover:bg-[var(--bg)] disabled:opacity-50 flex items-center gap-1">
@@ -193,7 +193,7 @@ function SessionRow({
           </button>
         </div>
       ) : s.is_full ? (
-        <span className="text-xs font-medium text-[var(--muted)] px-3 py-2">Completo</span>
+        <span className="text-xs font-medium text-[var(--muted)] px-3 py-2">Lotado</span>
       ) : (
         <button onClick={onBook} disabled={busy}
           className="text-sm font-medium rounded-lg bg-brand-500 text-white px-4 py-2 hover:bg-brand-600 disabled:opacity-50 flex items-center gap-1.5">

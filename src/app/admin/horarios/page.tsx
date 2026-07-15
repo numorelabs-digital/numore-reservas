@@ -1,13 +1,13 @@
 "use client";
-import { useHorarios } from "@/lib/hooks";
-import { HorariosManager } from "./horarios-manager";
+import { useHorários } from "@/lib/hooks";
+import { HoráriosManager } from "./horarios-manager";
 import { PageSkeleton } from "@/components/ui/skeleton";
 
-export default function HorariosPage() {
-  const { data, mutate } = useHorarios();
+export default function HoráriosPage() {
+  const { data, mutate } = useHorários();
   if (!data) return <PageSkeleton />;
   return (
-    <HorariosManager
+    <HoráriosManager
       classTypes={data.classTypes}
       schedules={data.schedules}
       sessions={data.sessions}

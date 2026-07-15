@@ -16,7 +16,7 @@ export default function RecompensasPage() {
       <div className="card p-6 bg-brand-500 text-white border-transparent text-center animate-fade-up">
         <Star size={28} className="mx-auto mb-2" fill="currentColor" />
         <p className="text-4xl font-bold">{balance}</p>
-        <p className="text-white/80 text-sm mt-1">puntos disponibles</p>
+        <p className="text-white/80 text-sm mt-1">pontos disponíveis</p>
       </div>
 
       <div>

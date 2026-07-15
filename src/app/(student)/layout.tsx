@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 
 export default async function StudentLayout({ children }: { children: React.ReactNode }) {
   const profile = await requireUser();
-  // El admin solo ve el panel admin, no la vista de alumno.
+  // El admin solo ve el panel admin, no la vista de aluno.
   if (profile.role === "admin") redirect("/admin");
 
   return (

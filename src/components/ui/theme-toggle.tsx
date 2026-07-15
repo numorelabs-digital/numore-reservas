@@ -12,7 +12,7 @@ export function ThemeToggle() {
   const isDark = theme === "dark";
   return (
     <button
-      aria-label="Cambiar tema"
+      aria-label="Mudar tema"
       onClick={() => setTheme(isDark ? "light" : "dark")}
       className="h-9 w-9 grid place-items-center rounded-lg border border-[var(--border)] hover:bg-[var(--bg)] transition"
     >

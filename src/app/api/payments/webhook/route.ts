@@ -7,7 +7,7 @@ import { addDays } from "date-fns";
 export const dynamic = "force-dynamic";
 
 // Mercado Pago llama a esta ruta cuando cambia el estado de un pago.
-// Si el pago fue aprobado, acredita el paquete (tickets) al alumno.
+// Si el pago fue aprobado, acredita el pacote (tickets) al aluno.
 export async function POST(request: Request) {
   try {
     const url = new URL(request.url);
@@ -64,8 +64,8 @@ export async function POST(request: Request) {
     const { data: profile } = await admin
       .from("profiles").select("full_name").eq("id", payment.profile_id).maybeSingle();
     await sendPushToAdmins(
-      "💰 Nueva compra",
-      `${profile?.full_name ?? "Alumno"} compró ${pkg.name} ($${pkg.price})`,
+      "💰 Nova compra",
+      `${profile?.full_name ?? "Aluno"} comprou ${pkg.name} ($${pkg.price})`,
       "/admin"
     );
 

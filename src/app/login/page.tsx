@@ -1,7 +1,7 @@
 "use client";
 import { createClient } from "@/lib/supabase/client";
 import { useState } from "react";
-import { DevLogin } from "./dev-login";
+import { EmailAuth } from "./dev-login";
 import { site } from "@/config/site";
 
 export default function LoginPage() {
@@ -23,12 +23,12 @@ export default function LoginPage() {
     <main className="min-h-dvh grid place-items-center px-6 bg-[var(--bg)]">
       <div className="w-full max-w-sm animate-fade-up">
         <div className="text-center mb-8">
-          <div className="mx-auto mb-4 h-14 w-14 rounded-2xl grid place-items-center text-2xl bg-brand-500 text-white shadow-lg shadow-brand-500/30">
+          <div className="mx-auto mb-4 h-14 w-14 rounded-2xl grid place-items-center text-2xl bg-brand-500 text-white shadow-lg shadow-brand-500/30 overflow-hidden">
             {site.logoUrl ? (
-              <img src={site.logoUrl} alt={site.name} className="h-9 w-9 rounded-lg" />
+              <img src={site.logoUrl} alt={site.name} className="h-full w-full object-cover" />
             ) : site.logoEmoji}
           </div>
-          <h1 className="text-2xl font-semibold tracking-tight">Bienvenido</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Bem-vindo</h1>
           <p className="text-[var(--muted)] mt-1 text-sm">{site.tagline}</p>
         </div>
 
@@ -39,13 +39,16 @@ export default function LoginPage() {
             className="w-full flex items-center justify-center gap-3 rounded-xl border border-[var(--border)] px-4 py-3 font-medium hover:bg-[var(--bg)] transition disabled:opacity-60"
           >
             <GoogleIcon />
-            {loading ? "Conectando…" : "Continuar con Google"}
+            {loading ? "Conectando…" : "Continuar com o Google"}
           </button>
-          <p className="text-xs text-center text-[var(--muted)] mt-4">
-            El acceso es solo con tu cuenta de Google.
-          </p>
-          {(process.env.NODE_ENV !== "production" ||
-            process.env.NEXT_PUBLIC_ENABLE_DEV_LOGIN === "true") && <DevLogin />}
+
+          <div className="flex items-center gap-3 my-4">
+            <div className="h-px flex-1 bg-[var(--border)]" />
+            <span className="text-xs text-[var(--muted)]">ou com e-mail</span>
+            <div className="h-px flex-1 bg-[var(--border)]" />
+          </div>
+
+          <EmailAuth />
         </div>
       </div>
     </main>

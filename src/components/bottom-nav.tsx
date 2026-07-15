@@ -5,9 +5,9 @@ import { Home, CalendarDays, Gift, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ITEMS = [
-  { href: "/dashboard", label: "Inicio", icon: Home },
+  { href: "/dashboard", label: "Início", icon: Home },
   { href: "/calendario", label: "Reservar", icon: CalendarDays },
-  { href: "/recompensas", label: "Puntos", icon: Gift },
+  { href: "/recompensas", label: "Pontos", icon: Gift },
   { href: "/perfil", label: "Perfil", icon: User },
 ];
 

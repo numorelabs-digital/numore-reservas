@@ -34,7 +34,7 @@ export function StoreClient({ packages, remaining, onPaid }: { packages: Pkg[]; 
       const status = await getPaymentStatus(pix.paymentId);
       if (status === "approved") {
         setPaid(true);
-        toast.success("¡Pago acreditado! Ya tenés tus clases.");
+        toast.success("Pagamento confirmado! Suas aulas já estão disponíveis.");
         onPaid?.();
       }
     }, 4000);
@@ -56,17 +56,17 @@ export function StoreClient({ packages, remaining, onPaid }: { packages: Pkg[]; 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold">Comprar clases</h1>
+        <h1 className="text-lg font-semibold">Comprar aulas</h1>
         <span className="text-xs rounded-full bg-brand-50 text-brand-600 px-2.5 py-1 font-medium dark:bg-brand-500/10 flex items-center gap-1">
-          <Ticket size={13} /> {remaining} disponibles
+          <Ticket size={13} /> {remaining} disponíveis
         </span>
       </div>
-      <p className="text-sm text-[var(--muted)]">Pagá con PIX desde cualquier banco. Se acredita solo.</p>
+      <p className="text-sm text-[var(--muted)]">Pague com PIX desde cualquier banco. Se acredita solo.</p>
 
       <div className="grid gap-3">
         {packages.length === 0 && (
           <div className="card p-6 text-center text-sm text-[var(--muted)]">
-            No hay paquetes disponibles por ahora.
+            Não há pacotes disponíveis por enquanto.
           </div>
         )}
         {packages.map((p) => (
@@ -90,7 +90,7 @@ export function StoreClient({ packages, remaining, onPaid }: { packages: Pkg[]; 
       </div>
 
       {/* Modal de pago PIX */}
-      <Modal open={!!pix} onClose={closeModal} title={paid ? "¡Pago confirmado!" : "Pagá con PIX"}>
+      <Modal open={!!pix} onClose={closeModal} title={paid ? "Pagamento confirmado!" : "Pague com PIX"}>
         {pix && !paid && (
           <div className="space-y-4 text-center">
             <p className="text-2xl font-bold">${pix.amount}</p>
@@ -101,27 +101,27 @@ export function StoreClient({ packages, remaining, onPaid }: { packages: Pkg[]; 
               />
             )}
             <div>
-              <p className="text-xs text-[var(--muted)] mb-1">O copiá el código PIX (copia e cola):</p>
+              <p className="text-xs text-[var(--muted)] mb-1">Ou copie o código PIX (copia e cola):</p>
               <button onClick={copyCode}
                 className="w-full flex items-center justify-center gap-2 rounded-xl border border-[var(--border)] px-3 py-2.5 text-sm hover:bg-[var(--bg)]">
                 {copied ? <><Check size={15} className="text-green-500" /> Copiado</> : <><Copy size={15} /> Copiar código</>}
               </button>
             </div>
             <div className="flex items-center justify-center gap-2 text-sm text-[var(--muted)]">
-              <Loader2 size={15} className="animate-spin" /> Esperando tu pago…
+              <Loader2 size={15} className="animate-spin" /> Aguardando seu pagamento…
             </div>
             <p className="text-xs text-[var(--muted)]">
-              Escaneá el QR o pegá el código en tu banco. En cuanto pagues, se acredita solo.
+              Escaneie o QR ou cole o código no seu banco. Assim que pagar, é creditado automaticamente.
             </p>
           </div>
         )}
         {paid && (
           <div className="text-center py-4 space-y-2">
             <Check size={48} className="mx-auto text-green-500" />
-            <p className="font-semibold">¡Listo! Tus clases ya están acreditadas.</p>
+            <p className="font-semibold">Pronto! Suas aulas já estão disponíveis.</p>
             <button onClick={closeModal}
               className="mt-2 rounded-xl bg-brand-500 text-white px-6 py-2.5 text-sm font-medium">
-              Ir a reservar
+              Ir para reservar
             </button>
           </div>
         )}

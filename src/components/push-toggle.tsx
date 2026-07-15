@@ -29,11 +29,11 @@ export function PushToggle() {
 
   async function enable() {
     const key = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-    if (!key) return toast.error("Falta configurar las claves VAPID.");
+    if (!key) return toast.error("Faltam configurar as chaves VAPID.");
     setState("loading");
     try {
       const perm = await Notification.requestPermission();
-      if (perm !== "granted") { setState("off"); return toast.error("Permiso denegado."); }
+      if (perm !== "granted") { setState("off"); return toast.error("Permissão negada."); }
 
       const reg = await navigator.serviceWorker.ready;
       const sub = await reg.pushManager.subscribe({
@@ -47,11 +47,11 @@ export function PushToggle() {
         auth: json.keys!.auth,
         userAgent: navigator.userAgent,
       });
-      if (res.ok) { setState("on"); toast.success("Notificaciones activadas en este dispositivo"); }
+      if (res.ok) { setState("on"); toast.success("Notificações ativadas neste dispositivo"); }
       else { setState("off"); toast.error(res.error); }
     } catch {
       setState("off");
-      toast.error("No se pudo activar.");
+      toast.error("Não foi possível ativar.");
     }
   }
 
@@ -61,7 +61,7 @@ export function PushToggle() {
     const sub = await reg.pushManager.getSubscription();
     if (sub) { await deletePushSubscription(sub.endpoint); await sub.unsubscribe(); }
     setState("off");
-    toast.success("Notificaciones desactivadas");
+    toast.success("Notificações desativadas");
   }
 
   if (state === "unsupported") return null;
@@ -70,7 +70,7 @@ export function PushToggle() {
     <button
       onClick={state === "on" ? disable : enable}
       disabled={state === "loading"}
-      title={state === "on" ? "Notificaciones activadas" : "Activar notificaciones"}
+      title={state === "on" ? "Notificações ativadas" : "Ativar notificaciones"}
       className="h-9 w-9 grid place-items-center rounded-lg border border-[var(--border)] hover:bg-[var(--bg)] transition disabled:opacity-50"
     >
       {state === "on" ? <BellRing size={18} className="text-brand-500" />

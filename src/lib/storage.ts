@@ -7,7 +7,7 @@ export async function uploadPublicFile(
   file: File,
   folder: string
 ): Promise<{ ok: true; url: string } | { ok: false; error: string }> {
-  if (!file || file.size === 0) return { ok: false, error: "Archivo vacío." };
+  if (!file || file.size === 0) return { ok: false, error: "Arquivo vazio." };
   if (file.size > 5 * 1024 * 1024) return { ok: false, error: "La imagen supera los 5 MB." };
   if (!file.type.startsWith("image/")) return { ok: false, error: "El archivo no es una imagen." };
 

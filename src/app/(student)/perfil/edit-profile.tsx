@@ -63,12 +63,12 @@ export function EditProfile({ profile }: { profile: any }) {
                 <Camera size={20} className="text-white" />
               </div>
             </button>
-            <span className="text-xs text-[var(--muted)]">Tocá para cambiar la foto</span>
+            <span className="text-xs text-[var(--muted)]">Toque para mudar a foto</span>
             <input ref={fileRef} name="avatar" type="file" accept="image/*" onChange={onPickPhoto} className="hidden" />
           </div>
 
           <div>
-            <label className={labelCls}>Nombre de usuario</label>
+            <label className={labelCls}>Nome de usuário</label>
             <input name="username" defaultValue={profile.username ?? ""} className={inputCls} placeholder="tu_apodo" />
           </div>
 
@@ -79,7 +79,7 @@ export function EditProfile({ profile }: { profile: any }) {
                 className={inputCls} placeholder="00000-000" inputMode="numeric" />
             </div>
             <div>
-              <label className={labelCls}>Ubicación</label>
+              <label className={labelCls}>Localização</label>
               <input name="location" value={location} onChange={(e) => setLocation(e.target.value)}
                 className={inputCls} placeholder="Ciudad, UF" />
             </div>
@@ -87,7 +87,7 @@ export function EditProfile({ profile }: { profile: any }) {
 
           <button disabled={pending}
             className="w-full rounded-xl bg-brand-500 text-white py-2.5 text-sm font-medium disabled:opacity-60 flex items-center justify-center gap-2">
-            {pending && <Loader2 size={16} className="animate-spin" />} Guardar
+            {pending && <Loader2 size={16} className="animate-spin" />} Salvar
           </button>
         </form>
       </Modal>

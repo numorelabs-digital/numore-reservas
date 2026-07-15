@@ -5,22 +5,22 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const WEEKDAYS_ES = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+export const WEEKDAYS_ES = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
-// Mapea códigos de error de las RPC a mensajes legibles (es-AR).
+// Mapeia códigos de erro das RPC para mensagens legíveis (pt-BR).
 export const BOOKING_ERRORS: Record<string, string> = {
-  SESSION_FULL: "Ese horario ya está completo.",
-  SESSION_NOT_OPEN: "El horario no está disponible.",
-  TOO_LATE_TO_BOOK: "Debés reservar con al menos 24 h de anticipación.",
-  NO_CLASSES_LEFT: "No te quedan clases en tu paquete.",
-  PURCHASE_EXPIRED: "Tu paquete venció.",
-  DAY_NOT_ALLOWED: "Ese día no está incluido en tu paquete de días fijos.",
-  QR_ALREADY_USED: "Este QR ya fue utilizado.",
-  QR_EXPIRED: "Este QR expiró.",
-  NOT_ENOUGH_POINTS: "No tenés puntos suficientes.",
+  SESSION_FULL: "Esse horário já está lotado.",
+  SESSION_NOT_OPEN: "O horário não está disponível.",
+  TOO_LATE_TO_BOOK: "Você precisa reservar com pelo menos 24 h de antecedência.",
+  NO_CLASSES_LEFT: "Você não tem mais aulas no seu pacote.",
+  PURCHASE_EXPIRED: "Seu pacote venceu.",
+  DAY_NOT_ALLOWED: "Esse dia não está incluído no seu pacote de dias fixos.",
+  QR_ALREADY_USED: "Este QR já foi utilizado.",
+  QR_EXPIRED: "Este QR expirou.",
+  NOT_ENOUGH_POINTS: "Você não tem pontos suficientes.",
 };
 
 export function humanBookingError(msg: string): string {
   const code = Object.keys(BOOKING_ERRORS).find((c) => msg.includes(c));
-  return code ? BOOKING_ERRORS[code] : "Ocurrió un error. Intentá de nuevo.";
+  return code ? BOOKING_ERRORS[code] : "Ocorreu um erro. Tente de novo.";
 }

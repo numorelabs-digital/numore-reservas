@@ -43,7 +43,7 @@ export async function createPixPayment(input: {
       notification_url: input.notificationUrl,
       payer: {
         email: input.payerEmail,
-        first_name: input.payerName || "Alumno",
+        first_name: input.payerName || "Aluno",
       },
     }),
   });

@@ -16,7 +16,7 @@ export function useMe() {
   });
 }
 
-// Resumen del dashboard del alumno.
+// Resumen del dashboard del aluno.
 export function useOverview(profileId?: string) {
   return useSWR(profileId ? ["overview", profileId] : null, async () => {
     const supabase = createClient();
@@ -43,7 +43,7 @@ export function useOverview(profileId?: string) {
   });
 }
 
-// Calendario: sesiones + cupos + reservas propias + tickets.
+// Calendario: sesiones + vagas + reservas próprias + tickets.
 export function useCalendar(profileId?: string) {
   return useSWR(profileId ? ["calendar", profileId] : null, async () => {
     const supabase = createClient();
@@ -75,7 +75,7 @@ export function useCalendar(profileId?: string) {
   });
 }
 
-// Puntos + recompensas.
+// Pontos + recompensas.
 export function useRewards(profileId?: string) {
   return useSWR(profileId ? ["rewards", profileId] : null, async () => {
     const supabase = createClient();
@@ -126,7 +126,7 @@ export function useRewardsAdmin() {
   });
 }
 
-export function useHorarios() {
+export function useHorários() {
   return useSWR("admin-horarios", async () => {
     const supabase = createClient();
     const t = today();
@@ -161,7 +161,7 @@ export function useStudents(q: string, estado: string) {
   });
 }
 
-// Tienda: paquetes flexibles + tickets disponibles.
+// Tienda: pacotes flexibles + tickets disponíveis.
 export function useStore(profileId?: string) {
   return useSWR(profileId ? ["store", profileId] : null, async () => {
     const supabase = createClient();

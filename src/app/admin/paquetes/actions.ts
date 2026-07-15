@@ -6,7 +6,7 @@ import { z } from "zod";
 const schema = z.object({
   name: z.string().min(1, "El nombre es obligatorio."),
   modality: z.enum(["flexible", "fixed_days"]),
-  classes_count: z.coerce.number().int().min(1, "Mínimo 1 clase.").max(24, "Máximo 24 clases."),
+  classes_count: z.coerce.number().int().min(1, "Mínimo 1 aula.").max(24, "Máximo 24 aulas."),
   price: z.coerce.number().min(0),
   validity_days: z.coerce.number().int().min(1).default(30),
 });
@@ -22,7 +22,7 @@ export async function savePackage(id: string | null, form: FormData) {
     : await supabase.from("packages").insert(payload);
   if (error) return { ok: false as const, error: error.message };
 
-  revalidatePath("/admin/paquetes");
+  revalidatePath("/admin/pacotes");
   return { ok: true as const };
 }
 
@@ -30,7 +30,7 @@ export async function togglePackage(id: string, active: boolean) {
   const supabase = await createClient();
   const { error } = await supabase.from("packages").update({ is_active: active }).eq("id", id);
   if (error) return { ok: false as const, error: error.message };
-  revalidatePath("/admin/paquetes");
+  revalidatePath("/admin/pacotes");
   return { ok: true as const };
 }
 
@@ -42,6 +42,6 @@ export async function deletePackage(id: string) {
     await supabase.from("packages").update({ is_active: false }).eq("id", id);
     return { ok: true as const, softDeleted: true };
   }
-  revalidatePath("/admin/paquetes");
+  revalidatePath("/admin/pacotes");
   return { ok: true as const };
 }

@@ -33,10 +33,10 @@ export function RewardsManager({ rewards, onChanged }: { rewards: Reward[]; onCh
     });
   }
   function remove(r: Reward) {
-    if (!confirm(`¿Eliminar "${r.name}"?`)) return;
+    if (!confirm(`Excluir "${r.name}"?`)) return;
     start(async () => {
       const res = await deleteReward(r.id);
-      if (res.ok) { toast.success((res as any).softDeleted ? "Tenía canjes: se desactivó." : "Eliminada"); onChanged?.(); }
+      if (res.ok) { toast.success((res as any).softDeleted ? "Tinha resgates: foi desativada." : "Excluída"); onChanged?.(); }
     });
   }
   function toggle(r: Reward) {
@@ -49,7 +49,7 @@ export function RewardsManager({ rewards, onChanged }: { rewards: Reward[]; onCh
         <h1 className="text-xl font-semibold">Recompensas</h1>
         <button onClick={() => openForm(null)}
           className="flex items-center gap-1.5 rounded-xl bg-brand-500 text-white px-3 py-2 text-sm font-medium">
-          <Plus size={16} /> Nueva
+          <Plus size={16} /> Nova
         </button>
       </div>
 
@@ -71,7 +71,7 @@ export function RewardsManager({ rewards, onChanged }: { rewards: Reward[]; onCh
                 <button onClick={() => toggle(r)}
                   className={`text-[11px] rounded px-1.5 py-0.5 font-medium ${
                     r.is_active ? "text-green-600 bg-green-50 dark:bg-green-500/10" : "text-[var(--muted)] bg-[var(--bg)]"
-                  }`}>{r.is_active ? "Activa" : "Off"}</button>
+                  }`}>{r.is_active ? "Ativa" : "Off"}</button>
                 <div className="flex-1" />
                 <button onClick={() => openForm(r)} className="text-[var(--muted)] hover:text-[var(--text)]"><Pencil size={14} /></button>
                 <button onClick={() => remove(r)} className="text-[var(--muted)] hover:text-red-500"><Trash2 size={14} /></button>
@@ -84,15 +84,15 @@ export function RewardsManager({ rewards, onChanged }: { rewards: Reward[]; onCh
       <Modal open={open} onClose={() => setOpen(false)} title={editing ? "Editar recompensa" : "Nueva recompensa"}>
         <form action={submit} className="space-y-3">
           <div>
-            <label className={labelCls}>Nombre</label>
+            <label className={labelCls}>Nome</label>
             <input name="name" defaultValue={editing?.name} className={inputCls} required />
           </div>
           <div>
-            <label className={labelCls}>Descripción</label>
+            <label className={labelCls}>Descrição</label>
             <input name="description" defaultValue={editing?.description ?? ""} className={inputCls} />
           </div>
           <div>
-            <label className={labelCls}>Foto del premio</label>
+            <label className={labelCls}>Foto do prêmio</label>
             <input type="hidden" name="current_image" value={editing?.image_url ?? ""} />
             <button type="button" onClick={() => fileRef.current?.click()}
               className="w-full aspect-video rounded-xl border border-dashed border-[var(--border)] overflow-hidden relative grid place-items-center hover:bg-[var(--bg)]">
@@ -100,7 +100,7 @@ export function RewardsManager({ rewards, onChanged }: { rewards: Reward[]; onCh
                 <img src={photo} alt="" className="absolute inset-0 h-full w-full object-cover" />
               ) : (
                 <span className="flex flex-col items-center gap-1 text-[var(--muted)] text-xs">
-                  <Camera size={22} /> Subir foto desde el dispositivo
+                  <Camera size={22} /> Enviar foto do dispositivo
                 </span>
               )}
             </button>
@@ -109,7 +109,7 @@ export function RewardsManager({ rewards, onChanged }: { rewards: Reward[]; onCh
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className={labelCls}>Puntos</label>
+              <label className={labelCls}>Pontos</label>
               <input name="points_cost" type="number" min={1} defaultValue={editing?.points_cost ?? 10} className={inputCls} required />
             </div>
             <div>
@@ -119,7 +119,7 @@ export function RewardsManager({ rewards, onChanged }: { rewards: Reward[]; onCh
           </div>
           <button disabled={pending}
             className="w-full rounded-xl bg-brand-500 text-white py-2.5 text-sm font-medium disabled:opacity-60 flex items-center justify-center gap-2">
-            {pending && <Loader2 size={16} className="animate-spin" />} Guardar
+            {pending && <Loader2 size={16} className="animate-spin" />} Salvar
           </button>
         </form>
       </Modal>

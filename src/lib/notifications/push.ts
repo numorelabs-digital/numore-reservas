@@ -2,7 +2,7 @@ import webpush from "web-push";
 import { createAdminClient } from "@/lib/supabase/server";
 import { site } from "@/config/site";
 import { format, parseISO } from "date-fns";
-import { es } from "date-fns/locale";
+import { ptBR } from "date-fns/locale";
 
 // Configura VAPID (claves generadas con `npm run gen:vapid`).
 function configure() {
@@ -45,20 +45,20 @@ export async function sendPushToAdmins(title: string, body: string, url = "/admi
 // Construye título + cuerpo legible a partir del evento y su payload enriquecido.
 function render(event: string, p: any): { title: string; body: string } {
   const when = p.session_date
-    ? `${format(parseISO(p.session_date), "EEE d MMM", { locale: es })} ${p.start_time?.slice(0, 5) ?? ""}`
+    ? `${format(parseISO(p.session_date), "EEE d MMM", { locale: ptBR })} ${p.start_time?.slice(0, 5) ?? ""}`
     : "";
-  const who = p.name || p.email || "Alumno";
+  const who = p.name || p.email || "Aluno";
   switch (event) {
-    case "new_booking":   return { title: "🥊 Nueva reserva", body: `${who} — ${p.class ?? ""} ${when}` };
-    case "reschedule":    return { title: "🔁 Cambio de horario", body: `${who} — nuevo: ${p.class ?? ""} ${when}` };
-    case "cancellation":  return { title: "❌ Cancelación", body: `${who} canceló ${p.class ?? ""} ${when}` };
-    case "new_user":      return { title: "👤 Nuevo alumno", body: `Se registró ${p.email ?? who}` };
+    case "new_booking":   return { title: "🥊 Nova reserva", body: `${who} — ${p.class ?? ""} ${when}` };
+    case "reschedule":    return { title: "🔁 Troca de horário", body: `${who} — nuevo: ${p.class ?? ""} ${when}` };
+    case "cancellation":  return { title: "❌ Cancelamento", body: `${who} canceló ${p.class ?? ""} ${when}` };
+    case "new_user":      return { title: "👤 Novo aluno", body: `Cadastrou-se ${p.email ?? who}` };
     case "contact_request": return { title: "📩 Contacto", body: `${who}: ${p.message ?? ""}` };
-    default:              return { title: site.name, body: "Tenés una novedad" };
+    default:              return { title: site.name, body: "Você tem uma novidade" };
   }
 }
 
-// Enrique el payload (ids → nombres/horarios) para un mensaje humano.
+// Enrique el payload (ids → nombres/horários) para un mensaje humano.
 async function enrich(supabase: any, event: string, payload: any) {
   const out = { ...payload };
   if (payload.profile_id) {
@@ -104,7 +104,7 @@ export async function processNotifications(): Promise<{ processed: number }> {
             msg
           );
         } catch (err: any) {
-          // Suscripción expirada/inválida → eliminar
+          // Suscripción expirada/inválida → excluir
           if (err?.statusCode === 404 || err?.statusCode === 410) {
             await supabase.from("push_subscriptions").delete().eq("id", s.id);
           }

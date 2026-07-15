@@ -7,7 +7,7 @@ export async function savePushSubscription(sub: {
 }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { ok: false as const, error: "No autenticado." };
+  if (!user) return { ok: false as const, error: "Não autenticado." };
 
   const { error } = await supabase.from("push_subscriptions").upsert(
     {

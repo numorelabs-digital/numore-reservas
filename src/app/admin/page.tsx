@@ -5,7 +5,7 @@ import { PageSkeleton } from "@/components/ui/skeleton";
 import { Users, CalendarCheck, UserCheck, Star } from "lucide-react";
 import Link from "next/link";
 import { format, parseISO } from "date-fns";
-import { es } from "date-fns/locale";
+import { ptBR } from "date-fns/locale";
 
 export default function AdminHome() {
   const { data } = useAdminOverview();
@@ -13,12 +13,12 @@ export default function AdminHome() {
 
   return (
     <div className="space-y-6 max-w-4xl">
-      <h1 className="text-xl font-semibold">Resumen</h1>
+      <h1 className="text-xl font-semibold">Resumo</h1>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <StatCard label="Alumnos activos" value={data.students} icon={<Users size={18} className="text-brand-500" />} />
-        <StatCard label="Reservas hoy" value={data.bookings} icon={<CalendarCheck size={18} className="text-brand-500" />} />
-        <StatCard label="Asistencias hoy" value={data.attendances} icon={<UserCheck size={18} className="text-brand-500" />} />
+        <StatCard label="Alunos ativos" value={data.students} icon={<Users size={18} className="text-brand-500" />} />
+        <StatCard label="Reservas hoje" value={data.bookings} icon={<CalendarCheck size={18} className="text-brand-500" />} />
+        <StatCard label="Presenças hoje" value={data.attendances} icon={<UserCheck size={18} className="text-brand-500" />} />
         <Link href="/admin/scanner">
           <StatCard label="Escanear QR" value={<span className="text-base">Abrir →</span>} accent icon={<Star size={18} className="text-white/80" />} />
         </Link>
@@ -28,7 +28,7 @@ export default function AdminHome() {
         <h2 className="text-sm font-semibold mb-2">Próximas reservas</h2>
         <div className="card divide-y divide-[var(--border)]">
           {data.upcoming.length === 0 && (
-            <p className="p-4 text-sm text-[var(--muted)]">Sin reservas próximas.</p>
+            <p className="p-4 text-sm text-[var(--muted)]">Sem reservas próximas.</p>
           )}
           {data.upcoming.map((b: any) => (
             <div key={b.id} className="flex items-center justify-between p-3.5">
@@ -37,7 +37,7 @@ export default function AdminHome() {
                 <p className="text-xs text-[var(--muted)]">{b.class_sessions?.class_types?.name}</p>
               </div>
               <p className="text-xs text-[var(--muted)] text-right">
-                {format(parseISO(b.class_sessions.session_date), "d MMM", { locale: es })}<br />
+                {format(parseISO(b.class_sessions.session_date), "d MMM", { locale: ptBR })}<br />
                 {b.class_sessions.start_time.slice(0, 5)} hs
               </p>
             </div>

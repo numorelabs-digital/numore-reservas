@@ -7,10 +7,10 @@ import { LayoutDashboard, ScanLine, CalendarCog, Package, Users, Gift } from "lu
 
 const NAV = [
   { href: "/admin", label: "Resumen", icon: LayoutDashboard },
-  { href: "/admin/scanner", label: "Escáner", icon: ScanLine },
-  { href: "/admin/horarios", label: "Horarios", icon: CalendarCog },
-  { href: "/admin/paquetes", label: "Paquetes", icon: Package },
-  { href: "/admin/alumnos", label: "Alumnos", icon: Users },
+  { href: "/admin/scanner", label: "Scanner", icon: ScanLine },
+  { href: "/admin/horarios", label: "Horários", icon: CalendarCog },
+  { href: "/admin/pacotes", label: "Pacotes", icon: Package },
+  { href: "/admin/alumnos", label: "Alunos", icon: Users },
   { href: "/admin/recompensas", label: "Recompensas", icon: Gift },
 ];
 
@@ -34,7 +34,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         </nav>
         <form action="/auth/signout" method="post">
           <button className="w-full text-left text-xs text-[var(--muted)] px-3 py-2 hover:underline">
-            Cerrar sesión
+            Sair
           </button>
         </form>
       </aside>

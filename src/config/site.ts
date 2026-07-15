@@ -1,31 +1,31 @@
 // =============================================================================
-// 🎨 CONFIGURACIÓN DE MARCA — EDITÁ ACÁ para cambiar textos y datos del negocio.
-// Todo lo visual de "qué dice" la app sale de este archivo.
-// (Colores y tipografía se cambian en globals.css — ver PERSONALIZACION.md)
+// 🎨 CONFIGURAÇÃO DA MARCA — EDITE AQUI para mudar textos e dados do negócio.
+// Pensado para reaproveitar como SaaS (academia, barbearia, estúdio, etc.):
+// mudando estes valores, a app inteira se adapta.
 // =============================================================================
 
 export const site = {
-  // Nombre del gimnasio (aparece en el encabezado y el login)
-  name: "Gimnasio",
-  // Nombre corto (para la app instalada / PWA)
-  shortName: "Reservas",
+  // Nome do negócio (aparece no cabeçalho e no login)
+  name: "Reserva+",
+  // Nome curto (para o app instalado / PWA)
+  shortName: "Reserva+",
 
-  // Frase de bienvenida en el login
-  tagline: "Reservá tus clases de Muay Thai, MMA y Boxeo",
+  // Frase de boas-vindas no login
+  tagline: "Reserve seu serviço aqui",
 
-  // Logo: si dejás logoUrl vacío, se muestra el emoji.
-  // Para usar tu logo, poné la imagen en /public (ej: "/logo.png") y su ruta acá.
-  logoEmoji: "🥊",
-  logoUrl: "" as string,
+  // Logo: se deixar logoUrl vazio, mostra o emoji.
+  // Para usar seu logo, coloque a imagem em /public e a rota aqui.
+  logoEmoji: "📅",
+  logoUrl: "/icons/icon.png" as string,
 
-  // Disciplinas que se dictan (solo texto/marketing)
-  disciplines: ["Muay Thai", "MMA", "Boxeo"],
+  // Categorias/serviços oferecidos (apenas texto/marketing)
+  disciplines: ["Muay Thai", "MMA", "Boxe"],
 
-  // Datos de contacto (se usan en pie de página / futuros formularios)
+  // Dados de contato (rodapé / formulários futuros)
   contact: {
-    whatsapp: "",   // ej: "+54 9 351 123 4567"
-    instagram: "",  // ej: "@tugimnasio"
-    address: "",    // ej: "Av. Siempre Viva 123"
+    whatsapp: "",   // ex: "+55 11 91234-5678"
+    instagram: "",  // ex: "@seunegocio"
+    address: "",
     email: "",
   },
 } as const;

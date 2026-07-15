@@ -12,10 +12,10 @@ export function RewardCard({ reward, balance, onRedeemed }: { reward: any; balan
   const soldOut = reward.stock !== null && reward.stock <= 0;
 
   function redeem() {
-    if (!confirm(`¿Canjear "${reward.name}" por ${reward.points_cost} puntos?`)) return;
+    if (!confirm(`¿Canjear "${reward.name}" por ${reward.points_cost} pontos?`)) return;
     start(async () => {
       const res = await redeemReward(reward.id);
-      if (res.ok) { toast.success("¡Canjeado! Retiralo en recepción."); onRedeemed?.(); }
+      if (res.ok) { toast.success("Resgatado! Retire na recepção."); onRedeemed?.(); }
       else toast.error(res.error);
     });
   }

@@ -22,13 +22,13 @@ export function AssignPackageForm({ profileId, packages }: { profileId: string; 
   function submit() {
     start(async () => {
       const res = await assignPackage({ profileId, packageId: pkgId, allowedWeekdays: days });
-      if (res.ok) { toast.success("Paquete asignado"); setDays([]); router.refresh(); }
+      if (res.ok) { toast.success("Pacote asignado"); setDays([]); router.refresh(); }
       else toast.error(res.error);
     });
   }
 
   if (packages.length === 0)
-    return <div className="card p-4 text-sm text-[var(--muted)]">No hay paquetes cargados. Creá uno en Paquetes.</div>;
+    return <div className="card p-4 text-sm text-[var(--muted)]">Não há pacotes cadastrados. Crie um em Pacotes.</div>;
 
   return (
     <div className="card p-4 space-y-3">
@@ -36,14 +36,14 @@ export function AssignPackageForm({ profileId, packages }: { profileId: string; 
         className="w-full card px-3 py-2.5 text-sm bg-[var(--bg)]">
         {packages.map((p) => (
           <option key={p.id} value={p.id}>
-            {p.name} — {p.classes_count} clases ({p.modality === "flexible" ? "flexible" : "días fijos"}) · ${p.price}
+            {p.name} — {p.classes_count} aulas ({p.modality === "flexible" ? "flexible" : "dias fixos"}) · ${p.price}
           </option>
         ))}
       </select>
 
       {isFixed && (
         <div>
-          <p className="text-xs text-[var(--muted)] mb-1.5">Días de entrenamiento:</p>
+          <p className="text-xs text-[var(--muted)] mb-1.5">Dias de treino:</p>
           <div className="flex gap-1.5">
             {WEEKDAYS_ES.map((label, i) => (
               <button key={i} type="button" onClick={() => toggleDay(i)}
@@ -60,7 +60,7 @@ export function AssignPackageForm({ profileId, packages }: { profileId: string; 
       <button onClick={submit} disabled={pending}
         className="w-full rounded-xl bg-brand-500 text-white py-2.5 text-sm font-medium disabled:opacity-60 flex items-center justify-center gap-2">
         {pending && <Loader2 size={16} className="animate-spin" />}
-        Asignar paquete
+        Atribuir pacote
       </button>
     </div>
   );

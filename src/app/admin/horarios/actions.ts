@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { addDays, format } from "date-fns";
 
-// ---- Tipos de clase --------------------------------------------------------
+// ---- Tipos de aula --------------------------------------------------------
 export async function saveClassType(id: string | null, name: string, color: string) {
   if (!name.trim()) return { ok: false as const, error: "El nombre es obligatorio." };
   const supabase = await createClient();
@@ -16,13 +16,13 @@ export async function saveClassType(id: string | null, name: string, color: stri
   return { ok: true as const };
 }
 
-// ---- Horarios recurrentes --------------------------------------------------
+// ---- Horários recurrentes --------------------------------------------------
 const scheduleSchema = z.object({
-  class_type_id: z.string().uuid("Elegí un tipo de clase."),
+  class_type_id: z.string().uuid("Escolha um tipo de aula."),
   weekday: z.coerce.number().int().min(0).max(6),
   start_time: z.string().min(4),
   end_time: z.string().min(4),
-  capacity: z.coerce.number().int().min(1, "Capacidad mínima 1.").max(200),
+  capacity: z.coerce.number().int().min(1, "Capacidade mínima 1.").max(200),
 });
 
 export async function saveSchedule(id: string | null, form: FormData) {
@@ -54,12 +54,12 @@ export async function deleteSchedule(id: string) {
   return { ok: true as const };
 }
 
-// ---- Generar sesiones concretas desde los horarios activos -----------------
+// ---- Gerar sessões concretas desde los horários activos -----------------
 export async function generateSessions(days = 21) {
   const supabase = await createClient();
   const { data: schedules } = await supabase
     .from("schedules").select("*").eq("is_active", true);
-  if (!schedules?.length) return { ok: false as const, error: "No hay horarios activos." };
+  if (!schedules?.length) return { ok: false as const, error: "Não há horários ativos." };
 
   const rows: any[] = [];
   for (let i = 0; i <= days; i++) {
@@ -88,7 +88,7 @@ export async function generateSessions(days = 21) {
   return { ok: true as const, count: rows.length };
 }
 
-// ---- Sesiones puntuales: bloquear / habilitar / cambiar capacidad ----------
+// ---- Sessões puntuales: bloquear / habilitar / cambiar capacidad ----------
 export async function updateSession(id: string, patch: { status?: string; capacity?: number }) {
   const supabase = await createClient();
   const { error } = await supabase.from("class_sessions").update(patch).eq("id", id);

@@ -30,7 +30,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={appFont.variable} suppressHydrationWarning>
+    <html lang="pt-BR" className={appFont.variable} suppressHydrationWarning>
       <body>
         <ThemeProvider>
           <SwrProvider>{children}</SwrProvider>

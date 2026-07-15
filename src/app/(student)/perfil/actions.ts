@@ -3,11 +3,11 @@ import { createClient } from "@/lib/supabase/server";
 import { uploadPublicFile } from "@/lib/storage";
 import { revalidatePath } from "next/cache";
 
-// Actualiza el perfil del alumno: nombre de usuario, ubicación, CEP y foto.
+// Actualiza el perfil del aluno: nombre de usuario, ubicación, CEP y foto.
 export async function updateProfile(form: FormData) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { ok: false as const, error: "No autenticado." };
+  if (!user) return { ok: false as const, error: "Não autenticado." };
 
   const patch: Record<string, any> = {
     username: (form.get("username") as string)?.trim() || null,

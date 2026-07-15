@@ -2,7 +2,7 @@
 import { SWRConfig } from "swr";
 
 // Caché persistente en localStorage: al volver a una pantalla (o recargar),
-// se muestran los datos guardados al instante y se revalidan en segundo plano.
+// se muestran los datos salvos al instante y se revalidan en segundo plano.
 function localStorageProvider() {
   if (typeof window === "undefined") return new Map();
   let map: Map<string, any>;
