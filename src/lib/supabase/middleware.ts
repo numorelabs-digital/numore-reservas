@@ -6,9 +6,16 @@ import type { Database } from "@/lib/types/database";
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
+  const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || "").trim();
+  const supabaseKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "").trim();
+
+  // Si falta configuración, no crashea el middleware: deja pasar y que la
+  // página muestre el estado real (evita 500 MIDDLEWARE_INVOCATION_FAILED).
+  if (!supabaseUrl || !supabaseKey) return NextResponse.next({ request });
+
   const supabase = createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseKey,
     {
       cookies: {
         getAll: () => request.cookies.getAll(),

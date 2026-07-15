@@ -7,8 +7,8 @@ import type { Database } from "@/lib/types/database";
 export async function createClient() {
   const cookieStore = await cookies();
   return createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    (process.env.NEXT_PUBLIC_SUPABASE_URL || "").trim(),
+    (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "").trim(),
     {
       cookies: {
         getAll: () => cookieStore.getAll(),
@@ -30,8 +30,8 @@ export async function createClient() {
 // notificaciones). Nunca exponer al cliente. Salta RLS.
 export function createAdminClient() {
   return createRawClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    (process.env.NEXT_PUBLIC_SUPABASE_URL || "").trim(),
+    (process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim(),
     { auth: { persistSession: false } }
   );
 }
