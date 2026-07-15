@@ -87,6 +87,80 @@ export function useRewards(profileId?: string) {
   });
 }
 
+// ===================== ADMIN =====================
+
+export function useAdminOverview() {
+  return useSWR("admin-overview", async () => {
+    const supabase = createClient();
+    const t = today();
+    const [students, bookings, attend, upcoming] = await Promise.all([
+      supabase.from("profiles").select("id", { count: "exact", head: true }).eq("role", "student").eq("is_active", true),
+      supabase.from("bookings").select("id, class_sessions!inner(session_date)", { count: "exact", head: true })
+        .eq("class_sessions.session_date", t).eq("status", "booked"),
+      supabase.from("attendances").select("id", { count: "exact", head: true }).gte("checked_in_at", t + "T00:00:00"),
+      supabase.from("bookings")
+        .select("id, status, profiles(full_name), class_sessions!inner(session_date, start_time, class_types(name))")
+        .gte("class_sessions.session_date", t).eq("status", "booked")
+        .order("session_date", { referencedTable: "class_sessions", ascending: true }).limit(8),
+    ]);
+    return {
+      students: students.count ?? 0, bookings: bookings.count ?? 0,
+      attendances: attend.count ?? 0, upcoming: upcoming.data ?? [],
+    };
+  });
+}
+
+export function usePackages() {
+  return useSWR("admin-packages", async () => {
+    const supabase = createClient();
+    const { data } = await supabase.from("packages").select("*").order("classes_count");
+    return data ?? [];
+  });
+}
+
+export function useRewardsAdmin() {
+  return useSWR("admin-rewards", async () => {
+    const supabase = createClient();
+    const { data } = await supabase.from("rewards").select("*").order("points_cost");
+    return data ?? [];
+  });
+}
+
+export function useHorarios() {
+  return useSWR("admin-horarios", async () => {
+    const supabase = createClient();
+    const t = today();
+    const [types, schedules, sessions, avail] = await Promise.all([
+      supabase.from("class_types").select("*").order("name"),
+      supabase.from("schedules").select("*, class_types(name, color)").order("weekday").order("start_time"),
+      supabase.from("class_sessions")
+        .select("id, session_date, start_time, end_time, capacity, status, class_types(name, color)")
+        .gte("session_date", t).order("session_date").order("start_time").limit(60),
+      supabase.from("session_availability").select("session_id, taken"),
+    ]);
+    const takenMap = Object.fromEntries((avail.data ?? []).map((a: any) => [a.session_id, a.taken]));
+    return {
+      classTypes: types.data ?? [],
+      schedules: schedules.data ?? [],
+      sessions: (sessions.data ?? []).map((s: any) => ({ ...s, taken: takenMap[s.id] ?? 0 })),
+    };
+  });
+}
+
+export function useStudents(q: string, estado: string) {
+  return useSWR(["admin-students", q, estado], async () => {
+    const supabase = createClient();
+    let query = supabase.from("profiles")
+      .select("id, full_name, username, location, email, avatar_url, is_active, created_at")
+      .eq("role", "student").order("full_name");
+    if (estado === "activos") query = query.eq("is_active", true);
+    if (estado === "inactivos") query = query.eq("is_active", false);
+    if (q) query = query.or(`full_name.ilike.%${q}%,email.ilike.%${q}%,username.ilike.%${q}%`);
+    const { data } = await query.limit(100);
+    return data ?? [];
+  });
+}
+
 // Tienda: paquetes flexibles + tickets disponibles.
 export function useStore(profileId?: string) {
   return useSWR(profileId ? ["store", profileId] : null, async () => {

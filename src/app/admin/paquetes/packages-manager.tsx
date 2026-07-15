@@ -3,7 +3,6 @@ import { useState, useTransition } from "react";
 import { Modal, inputCls, labelCls } from "@/components/ui/modal";
 import { savePackage, togglePackage, deletePackage } from "./actions";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
 
 type Pkg = {
@@ -11,8 +10,7 @@ type Pkg = {
   classes_count: number; price: number; validity_days: number; is_active: boolean;
 };
 
-export function PackagesManager({ packages }: { packages: Pkg[] }) {
-  const router = useRouter();
+export function PackagesManager({ packages, onChanged }: { packages: Pkg[]; onChanged?: () => void }) {
   const [editing, setEditing] = useState<Pkg | null>(null);
   const [open, setOpen] = useState(false);
   const [pending, start] = useTransition();
@@ -23,7 +21,7 @@ export function PackagesManager({ packages }: { packages: Pkg[] }) {
   function submit(form: FormData) {
     start(async () => {
       const res = await savePackage(editing?.id ?? null, form);
-      if (res.ok) { toast.success("Paquete guardado"); setOpen(false); router.refresh(); }
+      if (res.ok) { toast.success("Paquete guardado"); setOpen(false); onChanged?.(); }
       else toast.error(res.error);
     });
   }
@@ -34,13 +32,13 @@ export function PackagesManager({ packages }: { packages: Pkg[] }) {
       const res = await deletePackage(p.id);
       if (res.ok) {
         toast.success((res as any).softDeleted ? "Tenía compras: se desactivó." : "Eliminado");
-        router.refresh();
+        onChanged?.();
       }
     });
   }
 
   function toggle(p: Pkg) {
-    start(async () => { await togglePackage(p.id, !p.is_active); router.refresh(); });
+    start(async () => { await togglePackage(p.id, !p.is_active); onChanged?.(); });
   }
 
   return (

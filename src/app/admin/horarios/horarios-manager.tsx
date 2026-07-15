@@ -6,7 +6,6 @@ import {
   generateSessions, updateSession,
 } from "./actions";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { format, parseISO } from "date-fns";
 import { es } from "date-fns/locale";
 import { Plus, Pencil, Trash2, Loader2, Ban, CheckCircle2, RefreshCw } from "lucide-react";
@@ -14,7 +13,7 @@ import { cn } from "@/lib/utils";
 
 const DIAS = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
-export function HorariosManager({ classTypes, schedules, sessions }: any) {
+export function HorariosManager({ classTypes, schedules, sessions, onChanged }: any) {
   const [tab, setTab] = useState<"rec" | "ses">("rec");
   return (
     <div className="max-w-4xl">
@@ -29,15 +28,14 @@ export function HorariosManager({ classTypes, schedules, sessions }: any) {
         ))}
       </div>
       {tab === "rec"
-        ? <Recurrentes classTypes={classTypes} schedules={schedules} />
-        : <Sesiones sessions={sessions} />}
+        ? <Recurrentes classTypes={classTypes} schedules={schedules} onChanged={onChanged} />
+        : <Sesiones sessions={sessions} onChanged={onChanged} />}
     </div>
   );
 }
 
 // ---------------------------------------------------------------- Recurrentes
-function Recurrentes({ classTypes, schedules }: any) {
-  const router = useRouter();
+function Recurrentes({ classTypes, schedules, onChanged }: any) {
   const [pending, start] = useTransition();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<any>(null);
@@ -46,14 +44,14 @@ function Recurrentes({ classTypes, schedules }: any) {
   function submit(form: FormData) {
     start(async () => {
       const res = await saveSchedule(editing?.id ?? null, form);
-      if (res.ok) { toast.success("Horario guardado"); setOpen(false); router.refresh(); }
+      if (res.ok) { toast.success("Horario guardado"); setOpen(false); onChanged?.(); }
       else toast.error(res.error);
     });
   }
   function submitType(form: FormData) {
     start(async () => {
       const res = await saveClassType(null, String(form.get("name")), String(form.get("color")));
-      if (res.ok) { toast.success("Tipo creado"); setTypeOpen(false); router.refresh(); }
+      if (res.ok) { toast.success("Tipo creado"); setTypeOpen(false); onChanged?.(); }
       else toast.error(res.error);
     });
   }
@@ -98,13 +96,13 @@ function Recurrentes({ classTypes, schedules }: any) {
                   {s.start_time.slice(0, 5)}–{s.end_time.slice(0, 5)} · cupo {s.capacity}
                 </p>
               </div>
-              <button onClick={() => start(async () => { await toggleSchedule(s.id, !s.is_active); router.refresh(); })}
+              <button onClick={() => start(async () => { await toggleSchedule(s.id, !s.is_active); onChanged?.(); })}
                 className={cn("text-xs rounded-lg px-2 py-1 font-medium",
                   s.is_active ? "text-green-600 bg-green-50 dark:bg-green-500/10" : "text-[var(--muted)] bg-[var(--bg)]")}>
                 {s.is_active ? "Activo" : "Off"}
               </button>
               <button onClick={() => { setEditing(s); setOpen(true); }} className="text-[var(--muted)] hover:text-[var(--text)]"><Pencil size={15} /></button>
-              <button onClick={() => { if (confirm("¿Eliminar horario?")) start(async () => { await deleteSchedule(s.id); router.refresh(); }); }}
+              <button onClick={() => { if (confirm("¿Eliminar horario?")) start(async () => { await deleteSchedule(s.id); onChanged?.(); }); }}
                 className="text-[var(--muted)] hover:text-red-500"><Trash2 size={15} /></button>
             </div>
           ))}
@@ -167,20 +165,19 @@ function Recurrentes({ classTypes, schedules }: any) {
 }
 
 // ------------------------------------------------------------------- Sesiones
-function Sesiones({ sessions }: any) {
-  const router = useRouter();
+function Sesiones({ sessions, onChanged }: any) {
   const [pending, start] = useTransition();
 
   function generar() {
     start(async () => {
       const res = await generateSessions(21);
-      if (res.ok) { toast.success("Sesiones generadas para 21 días"); router.refresh(); }
+      if (res.ok) { toast.success("Sesiones generadas para 21 días"); onChanged?.(); }
       else toast.error(res.error);
     });
   }
   function toggleBlock(s: any) {
     const next = s.status === "open" ? "blocked" : "open";
-    start(async () => { await updateSession(s.id, { status: next }); router.refresh(); });
+    start(async () => { await updateSession(s.id, { status: next }); onChanged?.(); });
   }
   function editCap(s: any) {
     const v = prompt("Nueva capacidad:", String(s.capacity));
@@ -188,7 +185,7 @@ function Sesiones({ sessions }: any) {
     const cap = parseInt(v);
     if (isNaN(cap) || cap < 1) return toast.error("Capacidad inválida.");
     if (cap < s.taken) return toast.error(`Ya hay ${s.taken} reservas.`);
-    start(async () => { await updateSession(s.id, { capacity: cap }); router.refresh(); });
+    start(async () => { await updateSession(s.id, { capacity: cap }); onChanged?.(); });
   }
 
   return (

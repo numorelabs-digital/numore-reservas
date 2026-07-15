@@ -3,7 +3,6 @@ import { useState, useRef, useTransition } from "react";
 import { Modal, inputCls, labelCls } from "@/components/ui/modal";
 import { saveReward, toggleReward, deleteReward } from "./actions";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Plus, Pencil, Trash2, Loader2, Camera } from "lucide-react";
 
@@ -12,8 +11,8 @@ type Reward = {
   points_cost: number; stock: number | null; is_active: boolean;
 };
 
-export function RewardsManager({ rewards }: { rewards: Reward[] }) {
-  const router = useRouter();
+export function RewardsManager({ rewards, onChanged }: { rewards: Reward[]; onChanged?: () => void }) {
+  
   const [editing, setEditing] = useState<Reward | null>(null);
   const [open, setOpen] = useState(false);
   const [pending, start] = useTransition();
@@ -29,7 +28,7 @@ export function RewardsManager({ rewards }: { rewards: Reward[] }) {
   function submit(form: FormData) {
     start(async () => {
       const res = await saveReward(editing?.id ?? null, form);
-      if (res.ok) { toast.success("Recompensa guardada"); setOpen(false); router.refresh(); }
+      if (res.ok) { toast.success("Recompensa guardada"); setOpen(false); onChanged?.(); }
       else toast.error(res.error);
     });
   }
@@ -37,11 +36,11 @@ export function RewardsManager({ rewards }: { rewards: Reward[] }) {
     if (!confirm(`¿Eliminar "${r.name}"?`)) return;
     start(async () => {
       const res = await deleteReward(r.id);
-      if (res.ok) { toast.success((res as any).softDeleted ? "Tenía canjes: se desactivó." : "Eliminada"); router.refresh(); }
+      if (res.ok) { toast.success((res as any).softDeleted ? "Tenía canjes: se desactivó." : "Eliminada"); onChanged?.(); }
     });
   }
   function toggle(r: Reward) {
-    start(async () => { await toggleReward(r.id, !r.is_active); router.refresh(); });
+    start(async () => { await toggleReward(r.id, !r.is_active); onChanged?.(); });
   }
 
   return (

@@ -1,10 +1,10 @@
-import { requireAdmin } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
+"use client";
+import { useRewardsAdmin } from "@/lib/hooks";
 import { RewardsManager } from "./rewards-manager";
+import { PageSkeleton } from "@/components/ui/skeleton";
 
-export default async function AdminRecompensasPage() {
-  await requireAdmin();
-  const supabase = await createClient();
-  const { data: rewards } = await supabase.from("rewards").select("*").order("points_cost");
-  return <RewardsManager rewards={rewards ?? []} />;
+export default function AdminRecompensasPage() {
+  const { data, mutate } = useRewardsAdmin();
+  if (!data) return <PageSkeleton />;
+  return <RewardsManager rewards={data} onChanged={() => mutate()} />;
 }
