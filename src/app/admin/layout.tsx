@@ -2,6 +2,7 @@ import { requireAdmin } from "@/lib/auth";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { PushToggle } from "@/components/push-toggle";
+import { Logo } from "@/components/logo";
 import { LayoutDashboard, ScanLine, CalendarCog, Package, Users, Gift } from "lucide-react";
 
 const NAV = [
@@ -19,8 +20,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <div className="min-h-dvh md:flex">
       {/* Sidebar (desktop) */}
       <aside className="hidden md:flex md:flex-col w-60 border-r border-[var(--border)] p-4 sticky top-0 h-dvh">
-        <div className="flex items-center gap-2 font-semibold mb-6 px-2">
-          <span className="text-lg">🥊</span> Admin
+        <div className="mb-6 px-2">
+          <Logo withName />
+          <span className="text-xs text-[var(--muted)] ml-7">Panel admin</span>
         </div>
         <nav className="space-y-1 flex-1">
           {NAV.map(({ href, label, icon: Icon }) => (

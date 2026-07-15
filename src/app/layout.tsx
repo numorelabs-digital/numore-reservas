@@ -1,14 +1,20 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { site } from "@/config/site";
+// 🔤 TIPOGRAFÍA: para cambiar la fuente, reemplazá "Inter" por otra de
+// next/font/google (ej: Poppins, Montserrat) — es la única línea a tocar.
+import { Inter } from "next/font/google";
+
+const appFont = Inter({ subsets: ["latin"], variable: "--font-app", display: "swap" });
 import { ThemeProvider } from "@/components/theme-provider";
 import { PwaRegister } from "@/components/pwa-register";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: "Gimnasio · Clases y Reservas",
-  description: "Reservá tus clases de Muay Thai, MMA y Boxeo.",
-  manifest: "/manifest.json",
-  appleWebApp: { capable: true, statusBarStyle: "black-translucent" },
+  title: `${site.name} · Clases y Reservas`,
+  description: site.tagline,
+  manifest: "/manifest.webmanifest",
+  appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: site.shortName },
 };
 
 export const viewport: Viewport = {
@@ -23,7 +29,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" suppressHydrationWarning>
+    <html lang="es" className={appFont.variable} suppressHydrationWarning>
       <body>
         <ThemeProvider>
           {children}

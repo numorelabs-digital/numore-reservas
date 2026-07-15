@@ -2,6 +2,7 @@
 import { createClient } from "@/lib/supabase/client";
 import { useState } from "react";
 import { DevLogin } from "./dev-login";
+import { site } from "@/config/site";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
@@ -23,12 +24,12 @@ export default function LoginPage() {
       <div className="w-full max-w-sm animate-fade-up">
         <div className="text-center mb-8">
           <div className="mx-auto mb-4 h-14 w-14 rounded-2xl grid place-items-center text-2xl bg-brand-500 text-white shadow-lg shadow-brand-500/30">
-            🥊
+            {site.logoUrl ? (
+              <img src={site.logoUrl} alt={site.name} className="h-9 w-9 rounded-lg" />
+            ) : site.logoEmoji}
           </div>
           <h1 className="text-2xl font-semibold tracking-tight">Bienvenido</h1>
-          <p className="text-[var(--muted)] mt-1 text-sm">
-            Reservá tus clases de Muay Thai, MMA y Boxeo
-          </p>
+          <p className="text-[var(--muted)] mt-1 text-sm">{site.tagline}</p>
         </div>
 
         <div className="card p-6">

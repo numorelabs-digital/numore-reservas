@@ -1,6 +1,7 @@
 import { requireUser } from "@/lib/auth";
 import { BottomNav } from "@/components/bottom-nav";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { Logo } from "@/components/logo";
 import Link from "next/link";
 
 export default async function StudentLayout({ children }: { children: React.ReactNode }) {
@@ -10,8 +11,8 @@ export default async function StudentLayout({ children }: { children: React.Reac
     <div className="min-h-dvh pb-20">
       <header className="sticky top-0 z-30 border-b border-[var(--border)] bg-[var(--surface)]/80 backdrop-blur-lg">
         <div className="mx-auto max-w-lg flex items-center justify-between px-4 h-14">
-          <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
-            <span className="text-lg">🥊</span> Gimnasio
+          <Link href="/dashboard">
+            <Logo withName />
           </Link>
           <div className="flex items-center gap-2">
             {profile.role === "admin" && (

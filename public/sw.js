@@ -1,6 +1,6 @@
 // Service worker: app shell + Web Push (notificaciones al admin).
 const CACHE = "reservas-v2";
-const SHELL = ["/", "/login", "/manifest.json"];
+const SHELL = ["/", "/login", "/manifest.webmanifest"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)));

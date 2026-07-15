@@ -1,24 +1,38 @@
 @import "tailwindcss";
 
-/* Design tokens — modo claro y oscuro. Estética premium (Linear/Stripe-like). */
-@theme {
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+/* ===========================================================================
+   🎨 PALETA Y TIPOGRAFÍA — EDITÁ ACÁ para cambiar todo el aspecto visual.
+   Guía completa en PERSONALIZACION.md
+   =========================================================================== */
 
+@theme {
+  /* ---- TIPOGRAFÍA -------------------------------------------------------
+     La fuente se inyecta desde src/app/layout.tsx (next/font).
+     Para cambiarla, editá el import de la fuente ahí. */
+  --font-sans: var(--font-app), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* ---- COLOR PRINCIPAL (marca) -----------------------------------------
+     Cambiá estos 3 tonos por los de tu marca y toda la app se actualiza.
+     (500 = color base, 600 = hover, 700 = presionado) */
   --color-brand-50:  #fef2f2;
-  --color-brand-500: #ef4444;   /* rojo combate */
+  --color-brand-100: #fee2e2;
+  --color-brand-500: #ef4444;   /* ← COLOR PRINCIPAL */
   --color-brand-600: #dc2626;
   --color-brand-700: #b91c1c;
 }
 
+/* ---- MODO CLARO -----------------------------------------------------------
+   Colores de fondo, superficies, texto y bordes. */
 :root {
-  --bg: #fafafa;
-  --surface: #ffffff;
-  --text: #0a0a0a;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-  --radius: 0.875rem;
+  --bg: #fafafa;         /* fondo general */
+  --surface: #ffffff;    /* tarjetas / barras */
+  --text: #0a0a0a;       /* texto principal */
+  --muted: #6b7280;      /* texto secundario */
+  --border: #e5e7eb;     /* líneas y bordes */
+  --radius: 0.875rem;    /* redondeo de tarjetas */
 }
 
+/* ---- MODO OSCURO ---------------------------------------------------------- */
 .dark {
   --bg: #0a0a0b;
   --surface: #141416;
@@ -27,6 +41,9 @@
   --border: #26262b;
 }
 
+/* ===========================================================================
+   Estilos base (normalmente no hace falta tocar debajo de esta línea)
+   =========================================================================== */
 body {
   background: var(--bg);
   color: var(--text);
@@ -34,12 +51,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Tarjeta reutilizable */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
 
+/* Ocultar scrollbar horizontal (selector de días del calendario) */
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Animación de entrada suave */
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }

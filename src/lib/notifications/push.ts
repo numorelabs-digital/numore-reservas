@@ -1,5 +1,6 @@
 import webpush from "web-push";
 import { createAdminClient } from "@/lib/supabase/server";
+import { site } from "@/config/site";
 import { format, parseISO } from "date-fns";
 import { es } from "date-fns/locale";
 
@@ -29,7 +30,7 @@ function render(event: string, p: any): { title: string; body: string } {
     case "cancellation":  return { title: "❌ Cancelación", body: `${who} canceló ${p.class ?? ""} ${when}` };
     case "new_user":      return { title: "👤 Nuevo alumno", body: `Se registró ${p.email ?? who}` };
     case "contact_request": return { title: "📩 Contacto", body: `${who}: ${p.message ?? ""}` };
-    default:              return { title: "Gimnasio", body: "Tenés una novedad" };
+    default:              return { title: site.name, body: "Tenés una novedad" };
   }
 }
 
