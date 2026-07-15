@@ -18,6 +18,30 @@ function configure() {
 
 type Notif = { id: string; event: string; payload: any };
 
+// Envía una notificación push a todos los admins (uso directo, sin cola).
+// La usa el webhook de pagos para avisar al instante que entró una compra.
+export async function sendPushToAdmins(title: string, body: string, url = "/admin") {
+  if (!configure()) return;
+  const supabase = createAdminClient();
+  const { data: admins } = await supabase.from("profiles").select("id").eq("role", "admin");
+  const adminIds = (admins ?? []).map((a: any) => a.id);
+  if (!adminIds.length) return;
+  const { data: subs } = await supabase
+    .from("push_subscriptions").select("*").in("profile_id", adminIds);
+  const msg = JSON.stringify({ title, body, url });
+  await Promise.all((subs ?? []).map(async (s: any) => {
+    try {
+      await webpush.sendNotification(
+        { endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, msg
+      );
+    } catch (err: any) {
+      if (err?.statusCode === 404 || err?.statusCode === 410) {
+        await supabase.from("push_subscriptions").delete().eq("id", s.id);
+      }
+    }
+  }));
+}
+
 // Construye título + cuerpo legible a partir del evento y su payload enriquecido.
 function render(event: string, p: any): { title: string; body: string } {
   const when = p.session_date

@@ -31,11 +31,13 @@ export default async function DashboardPage() {
 
       {/* Métricas */}
       <div className="grid grid-cols-2 gap-3">
-        <StatCard
-          label="Clases restantes" value={o.remaining} accent
-          icon={<Ticket size={18} className="text-white/80" />}
-          sub={o.remaining > 0 ? "Disponibles para reservar" : "Comprá un paquete"}
-        />
+        <Link href="/tienda">
+          <StatCard
+            label="Clases restantes" value={o.remaining} accent
+            icon={<Ticket size={18} className="text-white/80" />}
+            sub={o.remaining > 0 ? "Tocá para comprar más" : "Tocá para comprar"}
+          />
+        </Link>
         <StatCard
           label="Puntos" value={o.points}
           icon={<Star size={18} className="text-brand-500" />}

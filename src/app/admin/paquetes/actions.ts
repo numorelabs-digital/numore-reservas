@@ -6,7 +6,7 @@ import { z } from "zod";
 const schema = z.object({
   name: z.string().min(1, "El nombre es obligatorio."),
   modality: z.enum(["flexible", "fixed_days"]),
-  classes_count: z.coerce.number().int().min(2, "Mínimo 2 clases.").max(24, "Máximo 24 clases."),
+  classes_count: z.coerce.number().int().min(1, "Mínimo 1 clase.").max(24, "Máximo 24 clases."),
   price: z.coerce.number().min(0),
   validity_days: z.coerce.number().int().min(1).default(30),
 });

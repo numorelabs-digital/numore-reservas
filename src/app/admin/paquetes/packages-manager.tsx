@@ -99,7 +99,7 @@ export function PackagesManager({ packages }: { packages: Pkg[] }) {
           <div className="grid grid-cols-3 gap-2">
             <div>
               <label className={labelCls}>Clases (2–24)</label>
-              <input name="classes_count" type="number" min={2} max={24} defaultValue={editing?.classes_count ?? 10} className={inputCls} required />
+              <input name="classes_count" type="number" min={1} max={24} defaultValue={editing?.classes_count ?? 10} className={inputCls} required />
             </div>
             <div>
               <label className={labelCls}>Precio</label>

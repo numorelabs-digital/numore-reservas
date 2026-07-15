@@ -69,7 +69,7 @@ export function CalendarClient({
       return;
     }
     if (!purchaseId) {
-      toast.error("No tenés clases disponibles. Pedí un paquete en recepción.");
+      toast.error("No tenés clases. Comprá en la Tienda para reservar.");
       return;
     }
     setBusyId(s.id);
