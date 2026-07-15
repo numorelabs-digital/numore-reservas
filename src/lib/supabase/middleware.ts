@@ -34,7 +34,11 @@ export async function updateSession(request: NextRequest) {
 
   const path = request.nextUrl.pathname;
   const isAuthRoute = path === "/login" || path.startsWith("/auth");
-  const isPublic = path === "/" || isAuthRoute || path.startsWith("/manifest");
+  const isPublic =
+    path === "/" ||
+    isAuthRoute ||
+    path.startsWith("/manifest") ||
+    path.startsWith("/api"); // las rutas de API manejan su propia autorización
 
   // Sin sesión y ruta protegida → login
   if (!user && !isPublic) {
