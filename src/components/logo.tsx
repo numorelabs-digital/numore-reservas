@@ -1,20 +1,21 @@
 import { site } from "@/config/site";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-// Muestra el logo del negocio: imagen si hay `logoUrl`, si no el emoji.
-// Cambiá el logo en src/config/site.ts
-export function Logo({ size = 20, withName = false, className }: {
+// Logo do negócio.
+// - withName (cabeçalho): mostra o nome em texto, limpo e legível.
+// - sem withName: mostra a marca/emoji.
+// Troque a marca em src/config/site.ts
+export function Logo({ withName = false, className }: {
   size?: number; withName?: boolean; className?: string;
 }) {
+  if (withName) {
+    return <span className={cn("font-semibold tracking-tight text-lg", className)}>{site.name}</span>;
+  }
   return (
-    <span className={cn("inline-flex items-center gap-2 font-semibold", className)}>
-      {site.logoUrl ? (
-        <Image src={site.logoUrl} alt={site.name} width={size + 6} height={size + 6} className="rounded-md" />
-      ) : (
-        <span style={{ fontSize: size }}>{site.logoEmoji}</span>
-      )}
-      {withName && <span>{site.name}</span>}
+    <span className={cn("inline-flex items-center", className)}>
+      {site.logoUrl
+        ? <img src={site.logoUrl} alt={site.name} className="h-8 w-8 rounded-lg object-contain" />
+        : <span style={{ fontSize: 22 }}>{site.logoEmoji}</span>}
     </span>
   );
 }
