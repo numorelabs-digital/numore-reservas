@@ -30,7 +30,11 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  const { data: { user } } = await supabase.auth.getUser();
+  // getSession() lee la sesión local (rápido) y refresca el token si hace falta.
+  // Solo se usa para decidir el redirect (UX). La seguridad de los datos la
+  // garantizan RLS + requireUser()/requireAdmin() dentro de cada página.
+  const { data: { session } } = await supabase.auth.getSession();
+  const user = session?.user;
 
   const path = request.nextUrl.pathname;
   const isAuthRoute = path === "/login" || path.startsWith("/auth");
