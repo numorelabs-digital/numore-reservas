@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="115" fill="#1c1c1c"/>
-  <path d="M0 512 Q 300 380 512 512 L512 512 L0 512 Z" fill="#4a3626"/>
-  <path d="M60 400 Q 300 300 452 400" stroke="#3a2c20" stroke-width="0" fill="none"/>
-  <text x="256" y="270" font-family="Arial, Helvetica, sans-serif" font-size="150" font-weight="700" fill="#c8c8c8" text-anchor="middle" dominant-baseline="middle">Reserva</text>
-  <text x="256" y="270" font-family="Arial, Helvetica, sans-serif" font-size="150" font-weight="700" fill="#c8c8c8" text-anchor="middle" dominant-baseline="middle" opacity="0"></text>
-</svg>

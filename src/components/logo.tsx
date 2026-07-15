@@ -8,14 +8,12 @@ import { cn } from "@/lib/utils";
 export function Logo({ withName = false, className }: {
   size?: number; withName?: boolean; className?: string;
 }) {
-  if (withName) {
-    return <span className={cn("font-semibold tracking-tight text-lg", className)}>{site.name}</span>;
-  }
   return (
-    <span className={cn("inline-flex items-center", className)}>
+    <span className={cn("inline-flex items-center gap-2", className)}>
       {site.logoUrl
-        ? <img src={site.logoUrl} alt={site.name} className="h-8 w-8 rounded-lg object-contain" />
-        : <span style={{ fontSize: 22 }}>{site.logoEmoji}</span>}
+        ? <img src={site.logoUrl} alt={site.name} className="h-7 w-7 rounded-lg object-contain shrink-0" />
+        : <span style={{ fontSize: 20 }}>{site.logoEmoji}</span>}
+      {withName && <span className="font-semibold tracking-tight">{site.name}</span>}
     </span>
   );
 }

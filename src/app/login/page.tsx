@@ -25,7 +25,7 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           {site.logoUrl ? (
             <img src={site.logoUrl} alt={site.name}
-              className="mx-auto mb-4 h-20 w-20 rounded-2xl object-contain shadow-lg" />
+              className="mx-auto mb-4 h-14 w-14 rounded-2xl object-contain shadow-lg" />
           ) : (
             <div className="mx-auto mb-4 h-14 w-14 rounded-2xl grid place-items-center text-2xl bg-brand-500 text-white shadow-lg shadow-brand-500/30">
               {site.logoEmoji}
