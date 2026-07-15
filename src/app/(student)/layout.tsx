@@ -3,9 +3,12 @@ import { BottomNav } from "@/components/bottom-nav";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Logo } from "@/components/logo";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function StudentLayout({ children }: { children: React.ReactNode }) {
   const profile = await requireUser();
+  // El admin solo ve el panel admin, no la vista de alumno.
+  if (profile.role === "admin") redirect("/admin");
 
   return (
     <div className="min-h-dvh pb-20">
@@ -14,14 +17,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
           <Link href="/dashboard">
             <Logo withName />
           </Link>
-          <div className="flex items-center gap-2">
-            {profile.role === "admin" && (
-              <Link href="/admin" className="text-xs font-medium rounded-lg border border-[var(--border)] px-3 py-1.5 hover:bg-[var(--bg)]">
-                Panel admin
-              </Link>
-            )}
-            <ThemeToggle />
-          </div>
+          <ThemeToggle />
         </div>
       </header>
 

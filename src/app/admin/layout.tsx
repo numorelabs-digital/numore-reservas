@@ -32,9 +32,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             </Link>
           ))}
         </nav>
-        <Link href="/dashboard" className="text-xs text-[var(--muted)] px-3 py-2 hover:underline">
-          ← Volver a vista alumno
-        </Link>
+        <form action="/auth/signout" method="post">
+          <button className="w-full text-left text-xs text-[var(--muted)] px-3 py-2 hover:underline">
+            Cerrar sesión
+          </button>
+        </form>
       </aside>
 
       <div className="flex-1 min-w-0">

@@ -11,8 +11,8 @@ const nextConfig = {
   // se muestra al instante (sin re-pedir datos) durante estos segundos.
   experimental: {
     staleTimes: {
-      dynamic: 30,   // páginas con datos (dashboard, calendario, etc.)
-      static: 300,
+      dynamic: 300,  // 5 min de caché al navegar (se refresca tras cada acción)
+      static: 600,
     },
   },
 };
