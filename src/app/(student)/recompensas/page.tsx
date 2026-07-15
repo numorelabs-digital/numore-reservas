@@ -1,23 +1,18 @@
-import { requireUser } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
+"use client";
+import { useMe, useRewards } from "@/lib/hooks";
 import { RewardCard } from "./reward-card";
+import { PageSkeleton } from "@/components/ui/skeleton";
 import { Star } from "lucide-react";
 
-export default async function RecompensasPage() {
-  const profile = await requireUser();
-  const supabase = await createClient();
+export default function RecompensasPage() {
+  const { data: profile } = useMe();
+  const { data, mutate } = useRewards(profile?.id);
 
-  const [pointsRes, rewardsRes] = await Promise.all([
-    supabase.from("points_balance").select("balance").eq("profile_id", profile.id).maybeSingle(),
-    supabase.from("rewards").select("*").eq("is_active", true).order("points_cost"),
-  ]);
-
-  const balance = pointsRes.data?.balance ?? 0;
-  const rewards = rewardsRes.data ?? [];
+  if (!data) return <PageSkeleton />;
+  const { balance, rewards } = data;
 
   return (
     <div className="space-y-5">
-      {/* Balance destacado */}
       <div className="card p-6 bg-brand-500 text-white border-transparent text-center animate-fade-up">
         <Star size={28} className="mx-auto mb-2" fill="currentColor" />
         <p className="text-4xl font-bold">{balance}</p>
@@ -33,7 +28,7 @@ export default async function RecompensasPage() {
             </p>
           )}
           {rewards.map((r: any) => (
-            <RewardCard key={r.id} reward={r} balance={balance} />
+            <RewardCard key={r.id} reward={r} balance={balance} onRedeemed={() => mutate()} />
           ))}
         </div>
       </div>

@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect, useRef, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { Modal } from "@/components/ui/modal";
 import { createPayment, getPaymentStatus } from "./actions";
 import { toast } from "sonner";
@@ -9,8 +8,7 @@ import { Loader2, Copy, Check, Ticket, ShoppingCart } from "lucide-react";
 type Pkg = { id: string; name: string; classes_count: number; price: number };
 type Pix = { paymentId: string; qrCode: string; qrCodeBase64: string; amount: number };
 
-export function StoreClient({ packages, remaining }: { packages: Pkg[]; remaining: number }) {
-  const router = useRouter();
+export function StoreClient({ packages, remaining, onPaid }: { packages: Pkg[]; remaining: number; onPaid?: () => void }) {
   const [pending, start] = useTransition();
   const [busyId, setBusyId] = useState<string | null>(null);
   const [pix, setPix] = useState<Pix | null>(null);
@@ -37,11 +35,11 @@ export function StoreClient({ packages, remaining }: { packages: Pkg[]; remainin
       if (status === "approved") {
         setPaid(true);
         toast.success("¡Pago acreditado! Ya tenés tus clases.");
-        router.refresh();
+        onPaid?.();
       }
     }, 4000);
     return () => { if (pollRef.current) clearInterval(pollRef.current); };
-  }, [pix, paid, router]);
+  }, [pix, paid, onPaid]);
 
   function copyCode() {
     if (!pix) return;

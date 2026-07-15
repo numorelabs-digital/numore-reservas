@@ -1,15 +1,20 @@
-import { requireUser } from "@/lib/auth";
-import { getStudentOverview } from "@/lib/queries";
+"use client";
+import { useMe, useOverview } from "@/lib/hooks";
 import { StatCard } from "@/components/ui/stat-card";
+import { PageSkeleton } from "@/components/ui/skeleton";
 import { Ticket, CalendarClock, Star, Gift, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { format, parseISO } from "date-fns";
 import { es } from "date-fns/locale";
 
-export default async function DashboardPage() {
-  const profile = await requireUser();
-  const o = await getStudentOverview(profile.id);
+export default function DashboardPage() {
+  const { data: profile } = useMe();
+  const { data: o } = useOverview(profile?.id);
+
+  // Sin datos aún (primer render sin caché): esqueleto.
+  if (!profile || !o) return <PageSkeleton />;
+
   const firstName = profile.full_name?.split(" ")[0] ?? "Atleta";
 
   return (
@@ -111,11 +116,9 @@ function NextClassCard({ booking }: { booking: any }) {
         </p>
         <p className="text-sm text-[var(--muted)]">{s.start_time?.slice(0, 5)} hs</p>
       </div>
-      <div className="text-right">
-        <span className="text-xs rounded-full bg-brand-50 text-brand-600 px-2.5 py-1 font-medium dark:bg-brand-500/10">
-          Confirmada
-        </span>
-      </div>
+      <span className="text-xs rounded-full bg-brand-50 text-brand-600 px-2.5 py-1 font-medium dark:bg-brand-500/10">
+        Confirmada
+      </span>
     </Link>
   );
 }

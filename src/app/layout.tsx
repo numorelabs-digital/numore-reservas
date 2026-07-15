@@ -8,6 +8,7 @@ import { Inter } from "next/font/google";
 const appFont = Inter({ subsets: ["latin"], variable: "--font-app", display: "swap" });
 import { ThemeProvider } from "@/components/theme-provider";
 import { PwaRegister } from "@/components/pwa-register";
+import { SwrProvider } from "@/components/swr-provider";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
@@ -32,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="es" className={appFont.variable} suppressHydrationWarning>
       <body>
         <ThemeProvider>
-          {children}
+          <SwrProvider>{children}</SwrProvider>
           <PwaRegister />
           <Toaster position="top-center" richColors />
         </ThemeProvider>

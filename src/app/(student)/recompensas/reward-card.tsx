@@ -3,12 +3,10 @@ import Image from "next/image";
 import { useTransition } from "react";
 import { redeemReward } from "./actions";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { Loader2, Lock } from "lucide-react";
 
-export function RewardCard({ reward, balance }: { reward: any; balance: number }) {
+export function RewardCard({ reward, balance, onRedeemed }: { reward: any; balance: number; onRedeemed?: () => void }) {
   const [pending, start] = useTransition();
-  const router = useRouter();
   const affordable = balance >= reward.points_cost;
   const missing = reward.points_cost - balance;
   const soldOut = reward.stock !== null && reward.stock <= 0;
@@ -17,7 +15,7 @@ export function RewardCard({ reward, balance }: { reward: any; balance: number }
     if (!confirm(`¿Canjear "${reward.name}" por ${reward.points_cost} puntos?`)) return;
     start(async () => {
       const res = await redeemReward(reward.id);
-      if (res.ok) { toast.success("¡Canjeado! Retiralo en recepción."); router.refresh(); }
+      if (res.ok) { toast.success("¡Canjeado! Retiralo en recepción."); onRedeemed?.(); }
       else toast.error(res.error);
     });
   }
