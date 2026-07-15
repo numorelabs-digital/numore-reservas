@@ -1,4 +1,4 @@
--- DEPLOY COMPLETO (para base nueva). Si ya corriste el anterior, ejecutá SOLO 0005_payments.sql
+-- DEPLOY COMPLETO (base nueva). Si ya corriste migraciones previas, ejecutá solo las nuevas.
 
 -- =============================================================================
 -- SISTEMA DE CLASES Y RESERVAS — Esquema inicial (PostgreSQL / Supabase)
@@ -672,6 +672,22 @@ create policy "payments own read" on payments for select
   using (profile_id = auth.uid() or is_admin());
 create policy "payments own insert" on payments for insert
   with check (profile_id = auth.uid());
+
+-- =============================================================================
+-- Perfil ampliado (nombre de usuario, ubicación) + Storage para fotos
+-- =============================================================================
+
+alter table profiles add column if not exists username text;
+alter table profiles add column if not exists location text;   -- "Ciudad, UF"
+alter table profiles add column if not exists cep text;
+
+-- ---------------------------------------------------------------------------
+-- Buckets de Storage (públicos para lectura; las subidas van por el servidor
+-- con service-role, así no hacen falta políticas complejas en storage.objects)
+-- ---------------------------------------------------------------------------
+insert into storage.buckets (id, name, public)
+values ('avatars', 'avatars', true), ('rewards', 'rewards', true)
+on conflict (id) do nothing;
 
 -- =============================================================================
 -- SEED — datos de ejemplo para desarrollo.

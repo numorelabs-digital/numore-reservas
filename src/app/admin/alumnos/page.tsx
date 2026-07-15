@@ -14,7 +14,7 @@ export default async function AlumnosPage({
 
   let query = supabase
     .from("profiles")
-    .select("id, full_name, email, avatar_url, is_active, created_at")
+    .select("id, full_name, username, location, email, avatar_url, is_active, created_at")
     .eq("role", "student")
     .order("full_name");
 
@@ -54,12 +54,20 @@ export default async function AlumnosPage({
           <Link key={s.id} href={`/admin/alumnos/${s.id}`}
             className="flex items-center justify-between p-3.5 hover:bg-[var(--bg)] transition">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="h-9 w-9 rounded-full bg-brand-500 grid place-items-center text-white text-sm font-semibold shrink-0">
-                {(s.full_name ?? "?")[0]}
-              </div>
+              {s.avatar_url ? (
+                <img src={s.avatar_url} alt="" className="h-9 w-9 rounded-full object-cover shrink-0" />
+              ) : (
+                <div className="h-9 w-9 rounded-full bg-brand-500 grid place-items-center text-white text-sm font-semibold shrink-0">
+                  {(s.full_name ?? "?")[0]}
+                </div>
+              )}
               <div className="min-w-0">
-                <p className="text-sm font-medium truncate">{s.full_name ?? "Sin nombre"}</p>
-                <p className="text-xs text-[var(--muted)] truncate">{s.email}</p>
+                <p className="text-sm font-medium truncate">
+                  {s.username || s.full_name || "Sin nombre"}
+                </p>
+                <p className="text-xs text-[var(--muted)] truncate">
+                  {s.location ? `📍 ${s.location}` : s.email}
+                </p>
               </div>
             </div>
             <span className={`text-xs shrink-0 rounded-full px-2 py-0.5 ${

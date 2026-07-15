@@ -4,7 +4,8 @@ import Image from "next/image";
 import { format, parseISO } from "date-fns";
 import { es } from "date-fns/locale";
 import { QrCode } from "@/components/ui/qr-code";
-import { LogOut, QrCode as QrIcon } from "lucide-react";
+import { EditProfile } from "./edit-profile";
+import { LogOut, QrCode as QrIcon, MapPin } from "lucide-react";
 
 export default async function PerfilPage() {
   const profile = await requireUser();
@@ -31,10 +32,16 @@ export default async function PerfilPage() {
             {(profile.full_name ?? "A")[0]}
           </div>
         )}
-        <div className="min-w-0">
-          <p className="font-semibold truncate">{profile.full_name}</p>
+        <div className="min-w-0 flex-1">
+          <p className="font-semibold truncate">{(profile as any).username || profile.full_name}</p>
           <p className="text-sm text-[var(--muted)] truncate">{profile.email}</p>
+          {(profile as any).location && (
+            <p className="text-xs text-[var(--muted)] truncate flex items-center gap-1 mt-0.5">
+              <MapPin size={12} /> {(profile as any).location}
+            </p>
+          )}
         </div>
+        <EditProfile profile={profile} />
       </div>
 
       {/* QR de asistencia */}

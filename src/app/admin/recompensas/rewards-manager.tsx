@@ -1,11 +1,11 @@
 "use client";
-import { useState, useTransition } from "react";
+import { useState, useRef, useTransition } from "react";
 import { Modal, inputCls, labelCls } from "@/components/ui/modal";
 import { saveReward, toggleReward, deleteReward } from "./actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2, Camera } from "lucide-react";
 
 type Reward = {
   id: string; name: string; description: string | null; image_url: string | null;
@@ -17,6 +17,14 @@ export function RewardsManager({ rewards }: { rewards: Reward[] }) {
   const [editing, setEditing] = useState<Reward | null>(null);
   const [open, setOpen] = useState(false);
   const [pending, start] = useTransition();
+  const [photo, setPhoto] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  function openForm(r: Reward | null) {
+    setEditing(r);
+    setPhoto(r?.image_url ?? null);
+    setOpen(true);
+  }
 
   function submit(form: FormData) {
     start(async () => {
@@ -40,7 +48,7 @@ export function RewardsManager({ rewards }: { rewards: Reward[] }) {
     <div className="max-w-3xl">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-xl font-semibold">Recompensas</h1>
-        <button onClick={() => { setEditing(null); setOpen(true); }}
+        <button onClick={() => openForm(null)}
           className="flex items-center gap-1.5 rounded-xl bg-brand-500 text-white px-3 py-2 text-sm font-medium">
           <Plus size={16} /> Nueva
         </button>
@@ -66,7 +74,7 @@ export function RewardsManager({ rewards }: { rewards: Reward[] }) {
                     r.is_active ? "text-green-600 bg-green-50 dark:bg-green-500/10" : "text-[var(--muted)] bg-[var(--bg)]"
                   }`}>{r.is_active ? "Activa" : "Off"}</button>
                 <div className="flex-1" />
-                <button onClick={() => { setEditing(r); setOpen(true); }} className="text-[var(--muted)] hover:text-[var(--text)]"><Pencil size={14} /></button>
+                <button onClick={() => openForm(r)} className="text-[var(--muted)] hover:text-[var(--text)]"><Pencil size={14} /></button>
                 <button onClick={() => remove(r)} className="text-[var(--muted)] hover:text-red-500"><Trash2 size={14} /></button>
               </div>
             </div>
@@ -85,8 +93,20 @@ export function RewardsManager({ rewards }: { rewards: Reward[] }) {
             <input name="description" defaultValue={editing?.description ?? ""} className={inputCls} />
           </div>
           <div>
-            <label className={labelCls}>URL de imagen</label>
-            <input name="image_url" defaultValue={editing?.image_url ?? ""} className={inputCls} placeholder="https://…" />
+            <label className={labelCls}>Foto del premio</label>
+            <input type="hidden" name="current_image" value={editing?.image_url ?? ""} />
+            <button type="button" onClick={() => fileRef.current?.click()}
+              className="w-full aspect-video rounded-xl border border-dashed border-[var(--border)] overflow-hidden relative grid place-items-center hover:bg-[var(--bg)]">
+              {photo ? (
+                <img src={photo} alt="" className="absolute inset-0 h-full w-full object-cover" />
+              ) : (
+                <span className="flex flex-col items-center gap-1 text-[var(--muted)] text-xs">
+                  <Camera size={22} /> Subir foto desde el dispositivo
+                </span>
+              )}
+            </button>
+            <input ref={fileRef} name="image" type="file" accept="image/*" className="hidden"
+              onChange={(e) => { const f = e.target.files?.[0]; if (f) setPhoto(URL.createObjectURL(f)); }} />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div>

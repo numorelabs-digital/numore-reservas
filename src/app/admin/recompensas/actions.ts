@@ -1,12 +1,12 @@
 "use server";
 import { createClient } from "@/lib/supabase/server";
+import { uploadPublicFile } from "@/lib/storage";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 const schema = z.object({
   name: z.string().min(1, "El nombre es obligatorio."),
   description: z.string().optional(),
-  image_url: z.string().url("URL de imagen inválida.").optional().or(z.literal("")),
   points_cost: z.coerce.number().int().positive("Los puntos deben ser mayores a 0."),
   stock: z.coerce.number().int().min(0).optional(),
 });
@@ -18,10 +18,21 @@ export async function saveReward(id: string | null, form: FormData) {
 
   const supabase = await createClient();
   const d = parsed.data;
+
+  // Foto: subida desde el dispositivo (opcional). Si no hay archivo nuevo, se
+  // mantiene la imagen previa (campo oculto current_image).
+  let image_url: string | null = (raw.current_image as string) || null;
+  const file = form.get("image") as File | null;
+  if (file && file.size > 0) {
+    const up = await uploadPublicFile("rewards", file, "items");
+    if (!up.ok) return { ok: false as const, error: up.error };
+    image_url = up.url;
+  }
+
   const payload = {
     name: d.name,
     description: d.description || null,
-    image_url: d.image_url || null,
+    image_url,
     points_cost: d.points_cost,
     stock: raw.stock === "" ? null : d.stock, // vacío = ilimitado
   };
