@@ -51,15 +51,10 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Con sesión y en login → al dashboard
-  if (user && path === "/login") {
-    const url = request.nextUrl.clone();
-    url.pathname = "/dashboard";
-    return NextResponse.redirect(url);
-  }
-
-  // El rol admin lo valida el layout de /admin (requireAdmin), evitando
-  // una consulta extra en cada navegación aquí.
+  // NOTA: no redirigimos /login → /dashboard automáticamente. getSession() lee
+  // la cookie (puede estar vencida) y la página valida con getUser(); si no
+  // coincidieran, se generaba un bucle /login ↔ /dashboard. La raíz "/" ya
+  // manda al panel correcto cuando la sesión es válida.
 
   return response;
 }
