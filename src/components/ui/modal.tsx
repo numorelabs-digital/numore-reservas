@@ -17,18 +17,22 @@ export function Modal({
 
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 grid place-items-end sm:place-items-center bg-black/50 backdrop-blur-sm p-0 sm:p-4"
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm sm:p-4"
       onClick={onClose}>
       <div
-        className="card w-full sm:max-w-md max-h-[90dvh] overflow-y-auto rounded-b-none sm:rounded-b-2xl animate-fade-up"
+        className="card w-full sm:max-w-md flex flex-col max-h-[92dvh] sm:max-h-[88dvh] rounded-t-2xl rounded-b-none sm:rounded-2xl animate-fade-up"
         onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between p-4 border-b border-[var(--border)] sticky top-0 bg-[var(--surface)]">
+        {/* Encabezado fijo */}
+        <div className="flex items-center justify-between p-4 border-b border-[var(--border)] shrink-0">
           <h3 className="font-semibold">{title}</h3>
           <button onClick={onClose} className="text-[var(--muted)] hover:text-[var(--text)]">
             <X size={20} />
           </button>
         </div>
-        <div className="p-4">{children}</div>
+        {/* Contenido con scroll propio + espacio para la barra del celular */}
+        <div className="p-4 overflow-y-auto flex-1 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+          {children}
+        </div>
       </div>
     </div>
   );
